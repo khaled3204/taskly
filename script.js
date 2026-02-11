@@ -44,7 +44,7 @@ class TaskManager {
     }
 
     bindEvents() {
-        // Sidebar toggle
+        // Sidebar toggle (desktop - collapsed/expanded)
         document.getElementById('sidebar-toggle').addEventListener('click', () => {
             const sidebar = document.querySelector('.sidebar');
             const mainContent = document.querySelector('.main-content');
@@ -52,10 +52,43 @@ class TaskManager {
             sidebar.classList.toggle('collapsed');
             mainContent.classList.toggle('expanded');
 
-            // Save sidebar state to localStorage
             const isCollapsed = sidebar.classList.contains('collapsed');
             localStorage.setItem('taskly-sidebar-collapsed', isCollapsed);
         });
+
+        // ===== ADD THIS NEW MOBILE TOGGLE CODE =====
+        // Mobile sidebar toggle (uses 'show' class for sliding)
+        const mobileToggle = document.getElementById('sidebar-toggle');
+        const mobileSidebar = document.querySelector('.sidebar');
+
+        if (mobileToggle && mobileSidebar) {
+            mobileToggle.addEventListener('click', (e) => {
+                // Only on mobile
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    mobileSidebar.classList.toggle('show');
+                }
+            });
+        }
+
+        // Auto-close mobile sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.querySelector('.sidebar');
+                const toggle = document.getElementById('sidebar-toggle');
+
+                if (sidebar?.classList.contains('show')) {
+                    const isClickInsideSidebar = sidebar.contains(e.target);
+                    const isClickOnToggle = toggle?.contains(e.target);
+
+                    if (!isClickInsideSidebar && !isClickOnToggle) {
+                        sidebar.classList.remove('show');
+                    }
+                }
+            }
+        });
+
         // Quick actions
         document.getElementById('quick-add-task').addEventListener('click', () => this.openAddTaskModal());
         document.getElementById('quick-add-project').addEventListener('click', () => this.openAddProjectModal());
@@ -139,7 +172,6 @@ class TaskManager {
             }
         });
     }
-
     bindNavigationLinks() {
         document.addEventListener('click', (e) => {
             // Check if click is on a nav-link
