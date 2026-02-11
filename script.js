@@ -1866,18 +1866,23 @@ function checkUpdates() {
     }
 }
 
-// Initialize app when DOM is loaded
-document.addEventListener('DOMContentLoaded', function () {
-    // Check if user is logged in
-    const currentUser = JSON.parse(localStorage.getItem('taskly-current-user'));
-    const isLoggedIn = localStorage.getItem('taskly-logged-in') === 'true';
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.querySelector(".sidebar");
+    const toggle = document.getElementById("sidebar-toggle");
 
-    if (!currentUser || !currentUser.id || !isLoggedIn) {
-        // Redirect to login if not logged in
-        window.location.href = 'login.html';
-        return;
+    if (toggle && sidebar) {
+        toggle.addEventListener("click", function () {
+            sidebar.classList.toggle("show");
+        });
     }
 
-    // Initialize the app
-    initApp();
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener("click", function (e) {
+        if (sidebar.classList.contains("show") &&
+            !sidebar.contains(e.target) &&
+            e.target !== toggle
+        ) {
+            sidebar.classList.remove("show");
+        }
+    });
 });
