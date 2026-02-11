@@ -1477,3 +1477,177 @@ canvas {
         height: 36px;
     }
 }
+
+/* ========================================= */
+/*  IMPROVED MOBILE RESPONSIVENESS FIXES  BABBY WOOOHOOO*/
+/* ========================================= */
+
+/* Prevent horizontal scroll everywhere */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Better scaling for tablets */
+@media (max-width: 992px) {
+
+    .top-bar {
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+    }
+
+    .top-bar-left {
+        width: 100%;
+    }
+
+    .top-bar-right {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .dashboard-content {
+        grid-template-columns: 1fr;
+    }
+
+    .charts-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Main Mobile Fix */
+@media (max-width: 768px) {
+
+    /* Sidebar becomes overlay drawer */
+    .sidebar {
+        position: fixed;
+        width: 260px;
+        height: 100vh;
+        transform: translateX(-100%);
+        box-shadow: var(--shadow-heavy);
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+
+    /* Improve top bar */
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--spacing-md);
+    }
+
+    .top-bar-left h2 {
+        font-size: 1.25rem;
+    }
+
+    .top-bar-left p {
+        font-size: 0.8rem;
+    }
+
+    .top-bar-right {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    /* Buttons responsive */
+    .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    /* Content spacing */
+    .content-area {
+        padding: var(--spacing-md);
+    }
+
+    /* Task item wrap fix */
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .task-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    /* Stats full width */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Projects full width */
+    .project-list {
+        grid-template-columns: 1fr;
+    }
+
+    /* Forms stacked */
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Modal improvements */
+    .modal-content {
+        width: 95%;
+        padding: var(--spacing-lg);
+    }
+
+    /* Improve tab buttons */
+    .tab-buttons {
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        flex: 1 1 auto;
+        text-align: center;
+    }
+}
+
+/* Small Phones */
+@media (max-width: 480px) {
+
+    body {
+        font-size: 14px;
+    }
+
+    .top-bar-left h2 {
+        font-size: 1.1rem;
+    }
+
+    .stat-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .task-title {
+        font-size: 0.8rem;
+    }
+
+    .project-name {
+        font-size: 0.8rem;
+    }
+
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+    .notification {
+        right: 10px;
+        left: 10px;
+        max-width: unset;
+    }
+}
