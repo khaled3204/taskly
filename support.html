@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskly - Support</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background-secondary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .support-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        .support-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .support-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .support-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .support-content {
+            background: var(--background-primary);
+            border-radius: 16px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .support-tabs {
+            display: flex;
+            background: var(--background-secondary);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .support-tab {
+            flex: 1;
+            padding: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .support-tab:hover {
+            color: var(--text-primary);
+            background: var(--background-tertiary);
+        }
+
+        .support-tab.active {
+            color: var(--primary-color);
+            background: var(--background-primary);
+        }
+
+        .support-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 40px;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-family: inherit;
+            background: var(--background-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .priority-select {
+            display: flex;
+            gap: 10px;
+        }
+
+        .priority-option {
+            flex: 1;
+            text-align: center;
+        }
+
+        .priority-option input[type="radio"] {
+            display: none;
+        }
+
+        .priority-label {
+            display: block;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .priority-option input[type="radio"]:checked+.priority-label {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--primary-color);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn-back {
+            padding: 12px 24px;
+            background: var(--background-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back:hover {
+            background: var(--background-tertiary);
+            transform: translateY(-1px);
+        }
+
+        .notification {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification.success {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success-color);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .notification.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .faq-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px;
+            background: var(--background-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--background-tertiary);
+        }
+
+        .faq-question h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-answer.show {
+            padding: 20px;
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .contact-card {
+            background: var(--background-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .contact-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: white;
+            font-size: 20px;
+        }
+
+        .contact-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .contact-card p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .contact-card a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-card a:hover {
+            text-decoration: underline;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .support-container {
+                padding: 20px;
+            }
+
+            .support-header h1 {
+                font-size: 2rem;
+            }
+
+            .support-tabs {
+                flex-direction: column;
+            }
+
+            .tab-content {
+                padding: 24px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .priority-select {
+                flex-direction: column;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="support-container">
+        <div class="support-header">
+            <h1 id="support-title">Taskly Support</h1>
+            <p id="support-subtitle">Get help with Taskly features, report issues, or contact our team</p>
+        </div>
+
+        <div class="support-content">
+            <div class="support-tabs">
+                <button class="support-tab active" data-tab="contact">
+                    <i class="fas fa-headset"></i>
+                    <span id="tab-contact">Contact Support</span>
+                </button>
+                <button class="support-tab" data-tab="faq">
+                    <i class="fas fa-question-circle"></i>
+                    <span id="tab-faq">FAQ</span>
+                </button>
+                <button class="support-tab" data-tab="resources">
+                    <i class="fas fa-book"></i>
+                    <span id="tab-resources">Resources</span>
+                </button>
+            </div>
+
+            <!-- Contact Support Tab -->
+            <div id="contact-tab" class="tab-content active">
+                <div id="notification-container"></div>
+
+                <form class="contact-form" id="support-form">
+                    <div class="form-group">
+                        <label id="name-label">Your Name *</label>
+                        <input type="text" id="support-name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="email-label">Email Address *</label>
+                        <input type="email" id="support-email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="subject-label">Subject *</label>
+                        <select id="support-subject" required>
+                            <option value="" disabled selected id="select-subject">Select an issue type</option>
+                            <option value="bug" id="option-bug">Bug Report</option>
+                            <option value="feature" id="option-feature">Feature Request</option>
+                            <option value="account" id="option-account">Account Issue</option>
+                            <option value="billing" id="option-billing">Billing Question</option>
+                            <option value="other" id="option-other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="priority-label">Priority</label>
+                        <div class="priority-select">
+                            <div class="priority-option">
+                                <input type="radio" id="priority-low" name="priority" value="low" checked>
+                                <label for="priority-low" class="priority-label" id="label-low">Low</label>
+                            </div>
+                            <div class="priority-option">
+                                <input type="radio" id="priority-medium" name="priority" value="medium">
+                                <label for="priority-medium" class="priority-label" id="label-medium">Medium</label>
+                            </div>
+                            <div class="priority-option">
+                                <input type="radio" id="priority-high" name="priority" value="high">
+                                <label for="priority-high" class="priority-label" id="label-high">High</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="message-label">Detailed Description *</label>
+                        <textarea id="support-message" rows="6" placeholder="Please describe your issue in detail..."
+                            required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="attachment-label">Attachments (Optional)</label>
+                        <input type="file" id="support-attachments" multiple>
+                        <small style="color: var(--text-light); font-size: 12px; display: block; margin-top: 8px;">
+                            You can attach screenshots or files (max 5 files, 5MB each)
+                        </small>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="index.html" class="btn-back" id="btn-back">
+                            <i class="fas fa-arrow-left"></i>
+                            <span id="back-text">Back to App</span>
+                        </a>
+                        <button type="submit" class="btn btn-primary" id="submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            <span id="submit-text">Submit Request</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- FAQ Tab -->
+            <div id="faq-tab" class="tab-content">
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3 id="faq1-question">How do I create a new project?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p id="faq1-answer">Click the "New Project" button in the sidebar or use the Quick Actions
+                                panel. Enter the project name, description, and choose a color. Projects help organize
+                                related tasks together.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3 id="faq2-question">Can I import tasks from other apps?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p id="faq2-answer">Yes! Go to Settings > Data > Import Data. You can import tasks from CSV
+                                or JSON files. Check our documentation for supported formats and templates.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3 id="faq3-question">How do I share tasks with team members?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p id="faq3-answer">Currently, Taskly is designed for individual use. Team collaboration
+                                features are planned for future releases. You can export tasks and share the file with
+                                others.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3 id="faq4-question">Is my data backed up automatically?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p id="faq4-answer">Taskly stores all data locally in your browser. We recommend regularly
+                                exporting your data via Settings > Data > Export Data. Cloud backup features are coming
+                                soon.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <h3 id="faq5-question">How do I change the theme?</h3>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-answer">
+                            <p id="faq5-answer">Go to Settings > Preferences. You can choose between Light, Dark, or
+                                Auto (system) themes. Changes apply immediately.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resources Tab -->
+            <div id="resources-tab" class="tab-content">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 id="resources-docs">Documentation</h3>
+                        <p id="resources-docs-text">Complete user guides and API documentation</p>
+                        <a href="documentation.html" id="view-docs">View Documentation →</a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3 id="resources-videos">Video Tutorials</h3>
+                        <p id="resources-videos-text">Step-by-step video guides for all features</p>
+                        <a href="#" id="watch-videos" onclick="alert('Video tutorials coming soon!')">Watch Videos →</a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 id="resources-community">Community</h3>
+                        <p id="resources-community-text">Join our user community for tips and help</p>
+                        <a href="#" id="join-community" onclick="alert('Community forum coming soon!')">Join Community
+                            →</a>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-github"></i>
+                        </div>
+                        <h3 id="resources-github">GitHub</h3>
+                        <p id="resources-github-text">Report bugs or contribute to development</p>
+                        <a href="https://github.com" target="_blank" id="visit-github">Visit GitHub →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Apply language
+            applySupportLanguage();
+
+            // Check if user is logged in
+            const isLoggedIn = localStorage.getItem('taskly-logged-in') === 'true';
+            if (isLoggedIn) {
+                // Auto-fill user info
+                const userName = localStorage.getItem('taskly-user-name');
+                const userEmail = localStorage.getItem('taskly-user-email');
+                if (userName) {
+                    document.getElementById('support-name').value = userName;
+                }
+                if (userEmail) {
+                    document.getElementById('support-email').value = userEmail;
+                }
+            }
+
+            // Tab switching
+            document.querySelectorAll('.support-tab').forEach(tab => {
+                tab.addEventListener('click', function () {
+                    const tabId = this.dataset.tab;
+
+                    // Update active tab
+                    document.querySelectorAll('.support-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Show corresponding content
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                });
+            });
+
+            // FAQ accordion
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', function () {
+                    const answer = this.nextElementSibling;
+                    const icon = this.querySelector('i');
+
+                    if (answer.classList.contains('show')) {
+                        answer.classList.remove('show');
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    } else {
+                        // Close all other answers
+                        document.querySelectorAll('.faq-answer').forEach(ans => {
+                            ans.classList.remove('show');
+                            ans.previousElementSibling.querySelector('i').classList.remove('fa-chevron-up');
+                            ans.previousElementSibling.querySelector('i').classList.add('fa-chevron-down');
+                        });
+
+                        answer.classList.add('show');
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                });
+            });
+
+            // Support form submission
+            document.getElementById('support-form').addEventListener('submit', async function (e) {
+                e.preventDefault();
+
+                const name = document.getElementById('support-name').value.trim();
+                const email = document.getElementById('support-email').value.trim();
+                const subject = document.getElementById('support-subject').value;
+                const priority = document.querySelector('input[name="priority"]:checked').value;
+                const message = document.getElementById('support-message').value.trim();
+                const btn = document.getElementById('submit-btn');
+
+                // Validation
+                if (!name || !email || !subject || !message) {
+                    showNotification('Please fill in all required fields', 'error');
+                    return;
+                }
+
+                if (!validateEmail(email)) {
+                    showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+
+                // Save support request
+                const supportRequest = {
+                    id: Date.now(),
+                    name,
+                    email,
+                    subject,
+                    priority,
+                    message,
+                    date: new Date().toISOString(),
+                    status: 'pending'
+                };
+
+                // Get existing support requests
+                const existingRequests = JSON.parse(localStorage.getItem('taskly-support-requests') || '[]');
+                existingRequests.push(supportRequest);
+                localStorage.setItem('taskly-support-requests', JSON.stringify(existingRequests));
+
+                // Show success message
+                const t = getCurrentTranslation();
+                showNotification(t.supportSubmitted, 'success');
+
+                // Reset form
+                setTimeout(() => {
+                    this.reset();
+                    if (isLoggedIn) {
+                        const userName = localStorage.getItem('taskly-user-name');
+                        const userEmail = localStorage.getItem('taskly-user-email');
+                        if (userName) document.getElementById('support-name').value = userName;
+                        if (userEmail) document.getElementById('support-email').value = userEmail;
+                    }
+                }, 1000);
+            });
+
+            function showNotification(message, type = 'info') {
+                const container = document.getElementById('notification-container');
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+
+                container.innerHTML = '';
+                container.appendChild(notification);
+                notification.classList.add('show');
+
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }, 5000);
+            }
+
+            function validateEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            function getCurrentTranslation() {
+                const language = localStorage.getItem('taskly-language') || 'en';
+                const translations = {
+                    en: {
+                        supportSubmitted: 'Thank you for your submission. We will review it and get back to you soon!',
+                        backToApp: 'Back to App'
+                    },
+                    tr: {
+                        supportSubmitted: 'Gönderiminiz için teşekkür ederiz. İnceleyip en kısa sürede size dönüş yapacağız!',
+                        backToApp: 'Uygulamaya Dön'
+                    }
+                };
+                return translations[language] || translations.en;
+            }
+
+            function applySupportLanguage() {
+                const language = localStorage.getItem('taskly-language') || 'en';
+                const translations = {
+                    en: {
+                        title: "Taskly Support",
+                        subtitle: "Get help with Taskly features, report issues, or contact our team",
+                        tabContact: "Contact Support",
+                        tabFaq: "FAQ",
+                        tabResources: "Resources",
+                        nameLabel: "Your Name *",
+                        emailLabel: "Email Address *",
+                        subjectLabel: "Subject *",
+                        selectSubject: "Select an issue type",
+                        optionBug: "Bug Report",
+                        optionFeature: "Feature Request",
+                        optionAccount: "Account Issue",
+                        optionBilling: "Billing Question",
+                        optionOther: "Other",
+                        priorityLabel: "Priority",
+                        labelLow: "Low",
+                        labelMedium: "Medium",
+                        labelHigh: "High",
+                        messageLabel: "Detailed Description *",
+                        attachmentLabel: "Attachments (Optional)",
+                        backText: "Back to App",
+                        submitText: "Submit Request",
+                        faq1Question: "How do I create a new project?",
+                        faq1Answer: "Click the 'New Project' button in the sidebar or use the Quick Actions panel. Enter the project name, description, and choose a color. Projects help organize related tasks together.",
+                        faq2Question: "Can I import tasks from other apps?",
+                        faq2Answer: "Yes! Go to Settings > Data > Import Data. You can import tasks from CSV or JSON files. Check our documentation for supported formats and templates.",
+                        faq3Question: "How do I share tasks with team members?",
+                        faq3Answer: "Currently, Taskly is designed for individual use. Team collaboration features are planned for future releases. You can export tasks and share the file with others.",
+                        faq4Question: "Is my data backed up automatically?",
+                        faq4Answer: "Taskly stores all data locally in your browser. We recommend regularly exporting your data via Settings > Data > Export Data. Cloud backup features are coming soon.",
+                        faq5Question: "How do I change the theme?",
+                        faq5Answer: "Go to Settings > Preferences. You can choose between Light, Dark, or Auto (system) themes. Changes apply immediately.",
+                        resourcesDocs: "Documentation",
+                        resourcesDocsText: "Complete user guides and API documentation",
+                        viewDocs: "View Documentation →",
+                        resourcesVideos: "Video Tutorials",
+                        resourcesVideosText: "Step-by-step video guides for all features",
+                        watchVideos: "Watch Videos →",
+                        resourcesCommunity: "Community",
+                        resourcesCommunityText: "Join our user community for tips and help",
+                        joinCommunity: "Join Community →",
+                        resourcesGithub: "GitHub",
+                        resourcesGithubText: "Report bugs or contribute to development",
+                        visitGithub: "Visit GitHub →"
+                    },
+                    tr: {
+                        title: "Taskly Destek",
+                        subtitle: "Taskly özellikleri hakkında yardım alın, sorun bildirin veya ekibimizle iletişime geçin",
+                        tabContact: "Destek İletişimi",
+                        tabFaq: "SSS",
+                        tabResources: "Kaynaklar",
+                        nameLabel: "Adınız *",
+                        emailLabel: "E-posta Adresi *",
+                        subjectLabel: "Konu *",
+                        selectSubject: "Bir sorun türü seçin",
+                        optionBug: "Hata Bildirimi",
+                        optionFeature: "Özellik İsteği",
+                        optionAccount: "Hesap Sorunu",
+                        optionBilling: "Faturalandırma Sorusu",
+                        optionOther: "Diğer",
+                        priorityLabel: "Öncelik",
+                        labelLow: "Düşük",
+                        labelMedium: "Orta",
+                        labelHigh: "Yüksek",
+                        messageLabel: "Detaylı Açıklama *",
+                        attachmentLabel: "Ekler (İsteğe Bağlı)",
+                        backText: "Uygulamaya Dön",
+                        submitText: "İsteği Gönder",
+                        faq1Question: "Yeni bir proje nasıl oluştururum?",
+                        faq1Answer: "Kenar çubuğundaki 'Yeni Proje' düğmesine tıklayın veya Hızlı Eylemler panelini kullanın. Proje adını, açıklamasını girin ve bir renk seçin. Projeler, ilgili görevleri bir arada düzenlemenize yardımcı olur.",
+                        faq2Question: "Diğer uygulamalardan görevleri içe aktarabilir miyim?",
+                        faq2Answer: "Evet! Ayarlar > Veri > Veriyi İçe Aktar'a gidin. CSV veya JSON dosyalarından görevleri içe aktarabilirsiniz. Desteklenen biçimler ve şablonlar için belgelerimize bakın.",
+                        faq3Question: "Görevleri ekip üyeleriyle nasıl paylaşırım?",
+                        faq3Answer: "Şu anda Taskly bireysel kullanım için tasarlanmıştır. Ekip işbirliği özellikleri gelecek sürümler için planlanmıştır. Görevleri dışa aktarabilir ve dosyayı başkalarıyla paylaşabilirsiniz.",
+                        faq4Question: "Verilerim otomatik olarak yedekleniyor mu?",
+                        faq4Answer: "Taskly tüm verileri tarayıcınızda yerel olarak saklar. Verilerinizi düzenli olarak Ayarlar > Veri > Veriyi Dışa Aktar yoluyla dışa aktarmanızı öneririz. Bulut yedekleme özellikleri yakında geliyor.",
+                        faq5Question: "Temayı nasıl değiştiririm?",
+                        faq5Answer: "Ayarlar > Tercihler'e gidin. Açık, Koyu veya Otomatik (sistem) temaları arasından seçim yapabilirsiniz. Değişiklikler hemen uygulanır.",
+                        resourcesDocs: "Belgeler",
+                        resourcesDocsText: "Tam kullanıcı kılavuzları ve API belgeleri",
+                        viewDocs: "Belgelere Git →",
+                        resourcesVideos: "Video Eğitimleri",
+                        resourcesVideosText: "Tüm özellikler için adım adım video kılavuzları",
+                        watchVideos: "Videoları İzle →",
+                        resourcesCommunity: "Topluluk",
+                        resourcesCommunityText: "İpuçları ve yardım için kullanıcı topluluğumuza katılın",
+                        joinCommunity: "Topluluğa Katıl →",
+                        resourcesGithub: "GitHub",
+                        resourcesGithubText: "Hataları bildirin veya geliştirmeye katkıda bulunun",
+                        visitGithub: "GitHub'a Git →"
+                    }
+                };
+
+                const t = translations[language] || translations.en;
+
+                // Update all elements
+                document.getElementById('support-title').textContent = t.title;
+                document.getElementById('support-subtitle').textContent = t.subtitle;
+                document.getElementById('tab-contact').textContent = t.tabContact;
+                document.getElementById('tab-faq').textContent = t.tabFaq;
+                document.getElementById('tab-resources').textContent = t.tabResources;
+
+                // Contact form
+                document.getElementById('name-label').textContent = t.nameLabel;
+                document.getElementById('email-label').textContent = t.emailLabel;
+                document.getElementById('subject-label').textContent = t.subjectLabel;
+                document.getElementById('select-subject').textContent = t.selectSubject;
+                document.getElementById('option-bug').textContent = t.optionBug;
+                document.getElementById('option-feature').textContent = t.optionFeature;
+                document.getElementById('option-account').textContent = t.optionAccount;
+                document.getElementById('option-billing').textContent = t.optionBilling;
+                document.getElementById('option-other').textContent = t.optionOther;
+                document.getElementById('priority-label').textContent = t.priorityLabel;
+                document.getElementById('label-low').textContent = t.labelLow;
+                document.getElementById('label-medium').textContent = t.labelMedium;
+                document.getElementById('label-high').textContent = t.labelHigh;
+                document.getElementById('message-label').textContent = t.messageLabel;
+                document.getElementById('attachment-label').textContent = t.attachmentLabel;
+                document.getElementById('back-text').textContent = t.backText;
+                document.getElementById('submit-text').textContent = t.submitText;
+
+                // FAQ
+                document.getElementById('faq1-question').textContent = t.faq1Question;
+                document.getElementById('faq1-answer').textContent = t.faq1Answer;
+                document.getElementById('faq2-question').textContent = t.faq2Question;
+                document.getElementById('faq2-answer').textContent = t.faq2Answer;
+                document.getElementById('faq3-question').textContent = t.faq3Question;
+                document.getElementById('faq3-answer').textContent = t.faq3Answer;
+                document.getElementById('faq4-question').textContent = t.faq4Question;
+                document.getElementById('faq4-answer').textContent = t.faq4Answer;
+                document.getElementById('faq5-question').textContent = t.faq5Question;
+                document.getElementById('faq5-answer').textContent = t.faq5Answer;
+
+                // Resources
+                document.getElementById('resources-docs').textContent = t.resourcesDocs;
+                document.getElementById('resources-docs-text').textContent = t.resourcesDocsText;
+                document.getElementById('view-docs').textContent = t.viewDocs;
+                document.getElementById('resources-videos').textContent = t.resourcesVideos;
+                document.getElementById('resources-videos-text').textContent = t.resourcesVideosText;
+                document.getElementById('watch-videos').textContent = t.watchVideos;
+                document.getElementById('resources-community').textContent = t.resourcesCommunity;
+                document.getElementById('resources-community-text').textContent = t.resourcesCommunityText;
+                document.getElementById('join-community').textContent = t.joinCommunity;
+                document.getElementById('resources-github').textContent = t.resourcesGithub;
+                document.getElementById('resources-github-text').textContent = t.resourcesGithubText;
+                document.getElementById('visit-github').textContent = t.visitGithub;
+            }
+        });
+    </script>
+</body>
+
+</html>

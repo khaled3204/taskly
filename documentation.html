@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskly - Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--background-secondary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .docs-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .docs-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 20px;
+            height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .docs-sidebar-content {
+            background: var(--background-primary);
+            border-radius: 16px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--border-color);
+            padding: 20px 0;
+        }
+
+        .docs-logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .docs-logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .docs-logo p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+
+        .docs-nav {
+            padding: 0 20px;
+        }
+
+        .docs-nav-group {
+            margin-bottom: 20px;
+        }
+
+        .docs-nav-group h3 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .docs-nav-links {
+            list-style: none;
+        }
+
+        .docs-nav-links li {
+            margin-bottom: 8px;
+        }
+
+        .docs-nav-link {
+            display: block;
+            padding: 8px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .docs-nav-link:hover {
+            background: var(--background-tertiary);
+            color: var(--text-primary);
+        }
+
+        .docs-nav-link.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .docs-nav-link i {
+            width: 20px;
+            margin-right: 8px;
+            text-align: center;
+        }
+
+        .docs-main {
+            flex: 1;
+            background: var(--background-primary);
+            border-radius: 16px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .docs-header {
+            padding: 40px 40px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .docs-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .docs-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .docs-content {
+            padding: 40px;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .docs-section {
+            margin-bottom: 40px;
+            scroll-margin-top: 20px;
+        }
+
+        .docs-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .docs-section h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 24px 0 16px;
+        }
+
+        .docs-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .docs-section ul,
+        .docs-section ol {
+            color: var(--text-secondary);
+            margin-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .docs-section li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .feature-card {
+            background: var(--background-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .feature-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-card h4 i {
+            color: var(--primary-color);
+        }
+
+        .code-block {
+            background: var(--background-dark);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.875rem;
+            color: #e6e6e6;
+            overflow-x: auto;
+        }
+
+        .code-block code {
+            white-space: pre;
+        }
+
+        .note {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .note p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .warning {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--error-color);
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .tip {
+            background: rgba(34, 197, 94, 0.1);
+            border-left: 4px solid var(--success-color);
+            padding: 16px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .tip p {
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th,
+        .table td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background: var(--background-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .table td {
+            color: var(--text-secondary);
+        }
+
+        .docs-footer {
+            padding: 20px 40px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        .docs-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .docs-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .back-to-app {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+        }
+
+        .back-to-app a {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.3s ease;
+        }
+
+        .back-to-app a:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-heavy);
+        }
+
+        @media (max-width: 1024px) {
+            .docs-container {
+                flex-direction: column;
+            }
+
+            .docs-sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .docs-sidebar-content {
+                max-height: 300px;
+            }
+
+            .docs-content {
+                max-height: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .docs-container {
+                padding: 10px;
+            }
+
+            .docs-header,
+            .docs-content {
+                padding: 20px;
+            }
+
+            .docs-section {
+                margin-bottom: 30px;
+            }
+
+            .back-to-app {
+                bottom: 10px;
+                right: 10px;
+            }
+
+            .back-to-app a {
+                padding: 10px 20px;
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .docs-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .docs-section h2 {
+                font-size: 1.25rem;
+            }
+
+            .docs-section h3 {
+                font-size: 1.125rem;
+            }
+
+            .feature-card {
+                padding: 16px;
+            }
+
+            .code-block {
+                padding: 12px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="docs-container">
+        <!-- Sidebar -->
+        <aside class="docs-sidebar">
+            <div class="docs-sidebar-content">
+                <div class="docs-logo">
+                    <h1 id="docs-logo-title">Taskly Documentation</h1>
+                    <p id="docs-logo-subtitle">Complete guide to using Taskly</p>
+                </div>
+
+                <nav class="docs-nav">
+                    <div class="docs-nav-group">
+                        <h3 id="getting-started-title">Getting Started</h3>
+                        <ul class="docs-nav-links">
+                            <li><a href="#introduction" class="docs-nav-link active" id="nav-introduction">
+                                    <i class="fas fa-rocket"></i>
+                                    <span>Introduction</span>
+                                </a></li>
+                            <li><a href="#installation" class="docs-nav-link" id="nav-installation">
+                                    <i class="fas fa-download"></i>
+                                    <span>Installation</span>
+                                </a></li>
+                            <li><a href="#quick-start" class="docs-nav-link" id="nav-quick-start">
+                                    <i class="fas fa-bolt"></i>
+                                    <span>Quick Start</span>
+                                </a></li>
+                        </ul>
+                    </div>
+
+                    <div class="docs-nav-group">
+                        <h3 id="core-features-title">Core Features</h3>
+                        <ul class="docs-nav-links">
+                            <li><a href="#tasks" class="docs-nav-link" id="nav-tasks">
+                                    <i class="fas fa-tasks"></i>
+                                    <span>Tasks Management</span>
+                                </a></li>
+                            <li><a href="#projects" class="docs-nav-link" id="nav-projects">
+                                    <i class="fas fa-folder"></i>
+                                    <span>Projects</span>
+                                </a></li>
+                            <li><a href="#calendar" class="docs-nav-link" id="nav-calendar">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>Calendar View</span>
+                                </a></li>
+                            <li><a href="#dashboard" class="docs-nav-link" id="nav-dashboard">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Dashboard</span>
+                                </a></li>
+                        </ul>
+                    </div>
+
+                    <div class="docs-nav-group">
+                        <h3 id="advanced-title">Advanced</h3>
+                        <ul class="docs-nav-links">
+                            <li><a href="#settings" class="docs-nav-link" id="nav-settings">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Settings</span>
+                                </a></li>
+                            <li><a href="#import-export" class="docs-nav-link" id="nav-import-export">
+                                    <i class="fas fa-exchange-alt"></i>
+                                    <span>Import/Export</span>
+                                </a></li>
+                            <li><a href="#api" class="docs-nav-link" id="nav-api">
+                                    <i class="fas fa-code"></i>
+                                    <span>API Reference</span>
+                                </a></li>
+                        </ul>
+                    </div>
+
+                    <div class="docs-nav-group">
+                        <h3 id="troubleshooting-title">Troubleshooting</h3>
+                        <ul class="docs-nav-links">
+                            <li><a href="#faq" class="docs-nav-link" id="nav-faq">
+                                    <i class="fas fa-question-circle"></i>
+                                    <span>FAQ</span>
+                                </a></li>
+                            <li><a href="#common-issues" class="docs-nav-link" id="nav-common-issues">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <span>Common Issues</span>
+                                </a></li>
+                            <li><a href="#contact" class="docs-nav-link" id="nav-contact">
+                                    <i class="fas fa-headset"></i>
+                                    <span>Contact Support</span>
+                                </a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="docs-main">
+            <div class="docs-header">
+                <h1 id="docs-title">Taskly Documentation</h1>
+                <p id="docs-subtitle">Learn how to use Taskly effectively with this comprehensive guide</p>
+            </div>
+
+            <div class="docs-content">
+                <!-- Introduction Section -->
+                <section id="introduction" class="docs-section">
+                    <h2 id="section-introduction">Introduction</h2>
+                    <p id="intro-p1">Taskly is a professional task management application designed to help individuals
+                        and teams organize their work efficiently. With a clean interface and powerful features, Taskly
+                        makes it easy to manage tasks, projects, and deadlines.</p>
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-star"></i> <span id="feature-key">Key Features</span></h4>
+                        <ul id="feature-list">
+                            <li>Task creation with priorities, due dates, and labels</li>
+                            <li>Project organization for grouping related tasks</li>
+                            <li>Interactive calendar view for planning</li>
+                            <li>Comprehensive dashboard with analytics</li>
+                            <li>Multi-language support (English & Turkish)</li>
+                            <li>Dark/Light theme switching</li>
+                            <li>Local data storage with import/export capabilities</li>
+                        </ul>
+                    </div>
+
+                    <div class="note">
+                        <p id="note-local">Note: Taskly stores all data locally in your browser. No data is sent to
+                            external servers.</p>
+                    </div>
+                </section>
+
+                <!-- Installation Section -->
+                <section id="installation" class="docs-section">
+                    <h2 id="section-installation">Installation</h2>
+                    <p id="install-p1">Taskly is a web-based application that runs in your browser. No installation is
+                        required!</p>
+
+                    <h3 id="browser-requirements">Browser Requirements</h3>
+                    <p id="browser-p1">Taskly works best with modern browsers that support:</p>
+                    <ul id="browser-list">
+                        <li>HTML5 Local Storage API</li>
+                        <li>CSS Grid & Flexbox</li>
+                        <li>ES6 JavaScript Features</li>
+                    </ul>
+
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th id="table-browser">Browser</th>
+                                    <th id="table-version">Minimum Version</th>
+                                    <th id="table-status">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Google Chrome</td>
+                                    <td>60+</td>
+                                    <td><span style="color: var(--success-color);">✓ Fully Supported</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Mozilla Firefox</td>
+                                    <td>55+</td>
+                                    <td><span style="color: var(--success-color);">✓ Fully Supported</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Safari</td>
+                                    <td>12+</td>
+                                    <td><span style="color: var(--success-color);">✓ Fully Supported</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Microsoft Edge</td>
+                                    <td>79+</td>
+                                    <td><span style="color: var(--success-color);">✓ Fully Supported</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Quick Start Section -->
+                <section id="quick-start" class="docs-section">
+                    <h2 id="section-quick-start">Quick Start Guide</h2>
+                    <p id="quick-p1">Get started with Taskly in just a few minutes:</p>
+
+                    <h3 id="step1-title">Step 1: Create an Account</h3>
+                    <p id="step1-p1">Click "Sign Up" on the login page and enter your information. Your data will be
+                        stored securely in your browser.</p>
+
+                    <h3 id="step2-title">Step 2: Add Your First Task</h3>
+                    <ol id="step2-list">
+                        <li>Click "Quick Add" in the sidebar or "Add Task" in any view</li>
+                        <li>Enter a task title (required)</li>
+                        <li>Add optional details like description, due date, priority</li>
+                        <li>Click "Add Task" to save</li>
+                    </ol>
+
+                    <h3 id="step3-title">Step 3: Organize with Projects</h3>
+                    <p id="step3-p1">Create projects to group related tasks together:</p>
+                    <div class="code-block">
+                        <code id="project-example">
+1. Click "New Project" in sidebar
+2. Enter project name and description
+3. Choose a color for visual identification
+4. Click "Create Project"
+                        </code>
+                    </div>
+
+                    <div class="tip">
+                        <p id="tip-sample">Tip: When you first sign up, Taskly creates sample tasks and projects to help
+                            you get started.</p>
+                    </div>
+                </section>
+
+                <!-- Tasks Management Section -->
+                <section id="tasks" class="docs-section">
+                    <h2 id="section-tasks">Tasks Management</h2>
+                    <p id="tasks-p1">Tasks are the core building blocks of Taskly. Here's how to manage them
+                        effectively:</p>
+
+                    <h3 id="task-creation-title">Task Creation</h3>
+                    <p id="task-creation-p1">When creating a task, you can specify:</p>
+                    <ul id="task-properties">
+                        <li><strong>Title:</strong> Brief description of the task</li>
+                        <li><strong>Description:</strong> Detailed information (optional)</li>
+                        <li><strong>Priority:</strong> Low, Medium, or High</li>
+                        <li><strong>Due Date:</strong> When the task should be completed</li>
+                        <li><strong>Project:</strong> Which project this task belongs to</li>
+                        <li><strong>Labels:</strong> Comma-separated tags for organization</li>
+                    </ul>
+
+                    <h3 id="task-actions-title">Task Actions</h3>
+                    <div class="feature-card">
+                        <h4><i class="fas fa-check-circle"></i> <span id="action-complete">Complete Tasks</span></h4>
+                        <p id="action-complete-p">Click the checkbox next to any task to mark it as completed. Completed
+                            tasks appear in the "Completed" view.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-edit"></i> <span id="action-edit">Edit Tasks</span></h4>
+                        <p id="action-edit-p">Click the edit icon (pencil) on any task to modify its title.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-trash"></i> <span id="action-delete">Delete Tasks</span></h4>
+                        <p id="action-delete-p">Click the delete icon (trash) to remove a task. You'll be asked to
+                            confirm before deletion.</p>
+                    </div>
+                </section>
+
+                <!-- Projects Section -->
+                <section id="projects" class="docs-section">
+                    <h2 id="section-projects">Projects</h2>
+                    <p id="projects-p1">Projects help you organize related tasks. Here's what you need to know:</p>
+
+                    <h3 id="creating-projects-title">Creating Projects</h3>
+                    <ol id="create-project-steps">
+                        <li>Click "New Project" in the sidebar</li>
+                        <li>Enter a descriptive name</li>
+                        <li>Add an optional description</li>
+                        <li>Choose a color for visual identification</li>
+                        <li>Click "Create Project"</li>
+                    </ol>
+
+                    <h3 id="project-management-title">Project Management</h3>
+                    <p id="project-management-p">Each project has:</p>
+                    <ul id="project-features">
+                        <li>Task count badge showing number of tasks</li>
+                        <li>Color-coded identification in sidebar</li>
+                        <li>Dedicated project view showing all related tasks</li>
+                        <li>Ability to delete projects (tasks become unassigned)</li>
+                    </ul>
+
+                    <div class="warning">
+                        <p id="warning-delete">Warning: When you delete a project, its tasks are not deleted but become
+                            unassigned (no project).</p>
+                    </div>
+                </section>
+
+                <!-- Settings Section -->
+                <section id="settings" class="docs-section">
+                    <h2 id="section-settings">Settings & Preferences</h2>
+                    <p id="settings-p1">Customize Taskly to match your preferences:</p>
+
+                    <h3 id="profile-settings-title">Profile Settings</h3>
+                    <ul id="profile-options">
+                        <li>Display Name</li>
+                        <li>Email Address</li>
+                        <li>Avatar URL (supports any image URL)</li>
+                    </ul>
+
+                    <h3 id="app-preferences-title">Application Preferences</h3>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th id="table-setting">Setting</th>
+                                    <th id="table-options">Options</th>
+                                    <th id="table-description">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Theme</td>
+                                    <td>Light, Dark, Auto</td>
+                                    <td>Visual theme for the application</td>
+                                </tr>
+                                <tr>
+                                    <td>Language</td>
+                                    <td>English, Turkish</td>
+                                    <td>Interface language</td>
+                                </tr>
+                                <tr>
+                                    <td>Date Format</td>
+                                    <td>MM/DD/YYYY, DD/MM/YYYY, YYYY-MM-DD</td>
+                                    <td>How dates are displayed</td>
+                                </tr>
+                                <tr>
+                                    <td>Time Format</td>
+                                    <td>12-hour, 24-hour</td>
+                                    <td>Time display format</td>
+                                </tr>
+                                <tr>
+                                    <td>Notifications</td>
+                                    <td>On/Off</td>
+                                    <td>Browser notifications for due tasks</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Import/Export Section -->
+                <section id="import-export" class="docs-section">
+                    <h2 id="section-import-export">Data Import & Export</h2>
+                    <p id="import-p1">Taskly provides robust data management features:</p>
+
+                    <h3 id="export-title">Exporting Data</h3>
+                    <ol id="export-steps">
+                        <li>Go to Settings → Data</li>
+                        <li>Click "Export Data"</li>
+                        <li>A JSON file will be downloaded</li>
+                        <li>This file contains all your tasks, projects, and settings</li>
+                    </ol>
+
+                    <h3 id="import-title">Importing Data</h3>
+                    <ol id="import-steps">
+                        <li>Go to Settings → Data</li>
+                        <li>Click "Import Data"</li>
+                        <li>Select a previously exported JSON file</li>
+                        <li>Confirm to replace current data</li>
+                    </ol>
+
+                    <div class="note">
+                        <p id="note-backup">Important: Regularly export your data as a backup. Taskly stores data
+                            locally, so clearing browser data will remove your tasks.</p>
+                    </div>
+
+                    <h3 id="clear-data-title">Clearing All Data</h3>
+                    <p id="clear-p1">To start fresh or troubleshoot issues:</p>
+                    <div class="code-block">
+                        <code id="clear-instructions">
+1. Go to Settings → Data
+2. Click "Clear All Data"
+3. Confirm the action
+4. All tasks, projects, and settings will be removed
+                        </code>
+                    </div>
+                </section>
+            </div>
+
+            <div class="docs-footer">
+                <p id="footer-text">© 2026 Taskly. All rights reserved. <a href="support.html" id="footer-support">Need
+                        help? Contact Support</a></p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Back to App Button -->
+    <div class="back-to-app">
+        <a href="index.html" id="back-link">
+            <i class="fas fa-arrow-left"></i>
+            <span id="back-text">Back to App</span>
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Apply language
+            applyDocsLanguage();
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('.docs-nav-link').forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        // Update active nav link
+                        document.querySelectorAll('.docs-nav-link').forEach(l => l.classList.remove('active'));
+                        this.classList.add('active');
+
+                        // Scroll to target
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+
+                        // Update URL hash
+                        history.pushState(null, null, targetId);
+                    }
+                });
+            });
+
+            // Update active nav link based on scroll position
+            function updateActiveNavLink() {
+                const sections = document.querySelectorAll('.docs-section');
+                const navLinks = document.querySelectorAll('.docs-nav-link');
+
+                let currentSection = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (window.scrollY >= sectionTop) {
+                        currentSection = '#' + section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Initial update
+            updateActiveNavLink();
+
+            // Update on scroll
+            window.addEventListener('scroll', updateActiveNavLink);
+
+            function applyDocsLanguage() {
+                const language = localStorage.getItem('taskly-language') || 'en';
+                const translations = {
+                    en: {
+                        logoTitle: "Taskly Documentation",
+                        logoSubtitle: "Complete guide to using Taskly",
+                        gettingStarted: "Getting Started",
+                        navIntroduction: "Introduction",
+                        navInstallation: "Installation",
+                        navQuickStart: "Quick Start",
+                        coreFeatures: "Core Features",
+                        navTasks: "Tasks Management",
+                        navProjects: "Projects",
+                        navCalendar: "Calendar View",
+                        navDashboard: "Dashboard",
+                        advanced: "Advanced",
+                        navSettings: "Settings",
+                        navImportExport: "Import/Export",
+                        navApi: "API Reference",
+                        troubleshooting: "Troubleshooting",
+                        navFaq: "FAQ",
+                        navCommonIssues: "Common Issues",
+                        navContact: "Contact Support",
+                        docsTitle: "Taskly Documentation",
+                        docsSubtitle: "Learn how to use Taskly effectively with this comprehensive guide",
+                        sectionIntroduction: "Introduction",
+                        introP1: "Taskly is a professional task management application designed to help individuals and teams organize their work efficiently. With a clean interface and powerful features, Taskly makes it easy to manage tasks, projects, and deadlines.",
+                        featureKey: "Key Features",
+                        featureList: [
+                            "Task creation with priorities, due dates, and labels",
+                            "Project organization for grouping related tasks",
+                            "Interactive calendar view for planning",
+                            "Comprehensive dashboard with analytics",
+                            "Multi-language support (English & Turkish)",
+                            "Dark/Light theme switching",
+                            "Local data storage with import/export capabilities"
+                        ],
+                        noteLocal: "Note: Taskly stores all data locally in your browser. No data is sent to external servers.",
+                        sectionInstallation: "Installation",
+                        installP1: "Taskly is a web-based application that runs in your browser. No installation is required!",
+                        browserRequirements: "Browser Requirements",
+                        browserP1: "Taskly works best with modern browsers that support:",
+                        browserList: [
+                            "HTML5 Local Storage API",
+                            "CSS Grid & Flexbox",
+                            "ES6 JavaScript Features"
+                        ],
+                        tableBrowser: "Browser",
+                        tableVersion: "Minimum Version",
+                        tableStatus: "Status",
+                        sectionQuickStart: "Quick Start Guide",
+                        quickP1: "Get started with Taskly in just a few minutes:",
+                        step1Title: "Step 1: Create an Account",
+                        step1P1: "Click 'Sign Up' on the login page and enter your information. Your data will be stored securely in your browser.",
+                        step2Title: "Step 2: Add Your First Task",
+                        step2List: [
+                            "Click 'Quick Add' in the sidebar or 'Add Task' in any view",
+                            "Enter a task title (required)",
+                            "Add optional details like description, due date, priority",
+                            "Click 'Add Task' to save"
+                        ],
+                        step3Title: "Step 3: Organize with Projects",
+                        step3P1: "Create projects to group related tasks together:",
+                        projectExample: "1. Click 'New Project' in sidebar\n2. Enter project name and description\n3. Choose a color for visual identification\n4. Click 'Create Project'",
+                        tipSample: "Tip: When you first sign up, Taskly creates sample tasks and projects to help you get started.",
+                        sectionTasks: "Tasks Management",
+                        tasksP1: "Tasks are the core building blocks of Taskly. Here's how to manage them effectively:",
+                        taskCreationTitle: "Task Creation",
+                        taskCreationP1: "When creating a task, you can specify:",
+                        taskProperties: [
+                            "Title: Brief description of the task",
+                            "Description: Detailed information (optional)",
+                            "Priority: Low, Medium, or High",
+                            "Due Date: When the task should be completed",
+                            "Project: Which project this task belongs to",
+                            "Labels: Comma-separated tags for organization"
+                        ],
+                        taskActionsTitle: "Task Actions",
+                        actionComplete: "Complete Tasks",
+                        actionCompleteP: "Click the checkbox next to any task to mark it as completed. Completed tasks appear in the 'Completed' view.",
+                        actionEdit: "Edit Tasks",
+                        actionEditP: "Click the edit icon (pencil) on any task to modify its title.",
+                        actionDelete: "Delete Tasks",
+                        actionDeleteP: "Click the delete icon (trash) to remove a task. You'll be asked to confirm before deletion.",
+                        sectionProjects: "Projects",
+                        projectsP1: "Projects help you organize related tasks. Here's what you need to know:",
+                        creatingProjectsTitle: "Creating Projects",
+                        createProjectSteps: [
+                            "Click 'New Project' in the sidebar",
+                            "Enter a descriptive name",
+                            "Add an optional description",
+                            "Choose a color for visual identification",
+                            "Click 'Create Project'"
+                        ],
+                        projectManagementTitle: "Project Management",
+                        projectManagementP: "Each project has:",
+                        projectFeatures: [
+                            "Task count badge showing number of tasks",
+                            "Color-coded identification in sidebar",
+                            "Dedicated project view showing all related tasks",
+                            "Ability to delete projects (tasks become unassigned)"
+                        ],
+                        warningDelete: "Warning: When you delete a project, its tasks are not deleted but become unassigned (no project).",
+                        sectionSettings: "Settings & Preferences",
+                        settingsP1: "Customize Taskly to match your preferences:",
+                        profileSettingsTitle: "Profile Settings",
+                        profileOptions: [
+                            "Display Name",
+                            "Email Address",
+                            "Avatar URL (supports any image URL)"
+                        ],
+                        appPreferencesTitle: "Application Preferences",
+                        tableSetting: "Setting",
+                        tableOptions: "Options",
+                        tableDescription: "Description",
+                        sectionImportExport: "Data Import & Export",
+                        importP1: "Taskly provides robust data management features:",
+                        exportTitle: "Exporting Data",
+                        exportSteps: [
+                            "Go to Settings → Data",
+                            "Click 'Export Data'",
+                            "A JSON file will be downloaded",
+                            "This file contains all your tasks, projects, and settings"
+                        ],
+                        importTitle: "Importing Data",
+                        importSteps: [
+                            "Go to Settings → Data",
+                            "Click 'Import Data'",
+                            "Select a previously exported JSON file",
+                            "Confirm to replace current data"
+                        ],
+                        noteBackup: "Important: Regularly export your data as a backup. Taskly stores data locally, so clearing browser data will remove your tasks.",
+                        clearDataTitle: "Clearing All Data",
+                        clearP1: "To start fresh or troubleshoot issues:",
+                        clearInstructions: "1. Go to Settings → Data\n2. Click 'Clear All Data'\n3. Confirm the action\n4. All tasks, projects, and settings will be removed",
+                        footerText: "© 2026 Taskly. All rights reserved. ",
+                        footerSupport: "Need help? Contact Support",
+                        backText: "Back to App"
+                    },
+                    tr: {
+                        logoTitle: "Taskly Belgeleri",
+                        logoSubtitle: "Taskly kullanımı için tam kılavuz",
+                        gettingStarted: "Başlarken",
+                        navIntroduction: "Giriş",
+                        navInstallation: "Kurulum",
+                        navQuickStart: "Hızlı Başlangıç",
+                        coreFeatures: "Temel Özellikler",
+                        navTasks: "Görev Yönetimi",
+                        navProjects: "Projeler",
+                        navCalendar: "Takvim Görünümü",
+                        navDashboard: "Kontrol Paneli",
+                        advanced: "Gelişmiş",
+                        navSettings: "Ayarlar",
+                        navImportExport: "İçe/Dışa Aktar",
+                        navApi: "API Referansı",
+                        troubleshooting: "Sorun Giderme",
+                        navFaq: "SSS",
+                        navCommonIssues: "Yaygın Sorunlar",
+                        navContact: "Destek İletişimi",
+                        docsTitle: "Taskly Belgeleri",
+                        docsSubtitle: "Bu kapsamlı kılavuzla Taskly'yi etkili bir şekilde kullanmayı öğrenin",
+                        sectionIntroduction: "Giriş",
+                        introP1: "Taskly, bireylerin ve ekiplerin işlerini verimli bir şekilde organize etmelerine yardımcı olmak için tasarlanmış profesyonel bir görev yönetimi uygulamasıdır. Temiz arayüzü ve güçlü özellikleriyle Taskly, görevleri, projeleri ve son tarihleri yönetmeyi kolaylaştırır.",
+                        featureKey: "Temel Özellikler",
+                        featureList: [
+                            "Öncelikler, son tarihler ve etiketlerle görev oluşturma",
+                            "İlgili görevleri gruplandırmak için proje organizasyonu",
+                            "Planlama için etkileşimli takvim görünümü",
+                            "Analitik içeren kapsamlı kontrol paneli",
+                            "Çok dilli destek (İngilizce & Türkçe)",
+                            "Koyu/Açık tema değiştirme",
+                            "İçe/dışa aktarma yetenekleriyle yerel veri depolama"
+                        ],
+                        noteLocal: "Not: Taskly tüm verileri tarayıcınızda yerel olarak saklar. Hiçbir veri harici sunuculara gönderilmez.",
+                        sectionInstallation: "Kurulum",
+                        installP1: "Taskly, tarayıcınızda çalışan web tabanlı bir uygulamadır. Kurulum gerekmez!",
+                        browserRequirements: "Tarayıcı Gereksinimleri",
+                        browserP1: "Taskly, aşağıdakileri destekleyen modern tarayıcılarla en iyi şekilde çalışır:",
+                        browserList: [
+                            "HTML5 Yerel Depolama API'si",
+                            "CSS Grid & Flexbox",
+                            "ES6 JavaScript Özellikleri"
+                        ],
+                        tableBrowser: "Tarayıcı",
+                        tableVersion: "Minimum Sürüm",
+                        tableStatus: "Durum",
+                        sectionQuickStart: "Hızlı Başlangıç Kılavuzu",
+                        quickP1: "Taskly'ye sadece birkaç dakika içinde başlayın:",
+                        step1Title: "Adım 1: Hesap Oluşturun",
+                        step1P1: "Giriş sayfasında 'Kayıt Ol'u tıklayın ve bilgilerinizi girin. Verileriniz tarayıcınızda güvenle saklanacaktır.",
+                        step2Title: "Adım 2: İlk Görevinizi Ekleyin",
+                        step2List: [
+                            "Kenar çubuğundaki 'Hızlı Ekle'yi veya herhangi bir görünümdeki 'Görev Ekle'yi tıklayın",
+                            "Bir görev başlığı girin (gerekli)",
+                            "Açıklama, son tarih, öncelik gibi isteğe bağlı ayrıntıları ekleyin",
+                            "Kaydetmek için 'Görev Ekle'yi tıklayın"
+                        ],
+                        step3Title: "Adım 3: Projelerle Organize Edin",
+                        step3P1: "İlgili görevleri gruplandırmak için projeler oluşturun:",
+                        projectExample: "1. Kenar çubuğunda 'Yeni Proje'yi tıklayın\n2. Proje adını ve açıklamasını girin\n3. Görsel tanımlama için bir renk seçin\n4. 'Proje Oluştur'u tıklayın",
+                        tipSample: "İpucu: İlk kaydolduğunuzda, Taskly başlamanıza yardımcı olmak için örnek görevler ve projeler oluşturur.",
+                        sectionTasks: "Görev Yönetimi",
+                        tasksP1: "Görevler Taskly'nin temel yapı taşlarıdır. İşte onları etkili bir şekilde yönetmek için:",
+                        taskCreationTitle: "Görev Oluşturma",
+                        taskCreationP1: "Bir görev oluştururken şunları belirtebilirsiniz:",
+                        taskProperties: [
+                            "Başlık: Görevin kısa açıklaması",
+                            "Açıklama: Detaylı bilgi (isteğe bağlı)",
+                            "Öncelik: Düşük, Orta veya Yüksek",
+                            "Son Tarih: Görevin ne zaman tamamlanması gerektiği",
+                            "Proje: Bu görevin hangi projeye ait olduğu",
+                            "Etiketler: Organizasyon için virgülle ayrılmış etiketler"
+                        ],
+                        taskActionsTitle: "Görev Eylemleri",
+                        actionComplete: "Görevleri Tamamla",
+                        actionCompleteP: "Herhangi bir görevin yanındaki onay kutusuna tıklayarak tamamlandı olarak işaretleyin. Tamamlanan görevler 'Tamamlananlar' görünümünde görünür.",
+                        actionEdit: "Görevleri Düzenle",
+                        actionEditP: "Herhangi bir görevdeki düzenleme simgesine (kalem) tıklayarak başlığını değiştirin.",
+                        actionDelete: "Görevleri Sil",
+                        actionDeleteP: "Bir görevi kaldırmak için silme simgesine (çöp kutusu) tıklayın. Silmeden önce onay istenecektir.",
+                        sectionProjects: "Projeler",
+                        projectsP1: "Projeler, ilgili görevleri organize etmenize yardımcı olur. Bilmeniz gerekenler:",
+                        creatingProjectsTitle: "Proje Oluşturma",
+                        createProjectSteps: [
+                            "Kenar çubuğundaki 'Yeni Proje'yi tıklayın",
+                            "Açıklayıcı bir ad girin",
+                            "İsteğe bağlı bir açıklama ekleyin",
+                            "Görsel tanımlama için bir renk seçin",
+                            "'Proje Oluştur'u tıklayın"
+                        ],
+                        projectManagementTitle: "Proje Yönetimi",
+                        projectManagementP: "Her projede şunlar bulunur:",
+                        projectFeatures: [
+                            "Görev sayısını gösteren görev sayısı rozeti",
+                            "Kenar çubuğunda renk kodlu tanımlama",
+                            "Tüm ilgili görevleri gösteren özel proje görünümü",
+                            "Projeleri silme yeteneği (görevler atanmamış olur)"
+                        ],
+                        warningDelete: "Uyarı: Bir projeyi sildiğinizde, görevleri silinmez ancak atanmamış (projesiz) olur.",
+                        sectionSettings: "Ayarlar & Tercihler",
+                        settingsP1: "Taskly'yi tercihlerinize uyacak şekilde özelleştirin:",
+                        profileSettingsTitle: "Profil Ayarları",
+                        profileOptions: [
+                            "Görünen Ad",
+                            "E-posta Adresi",
+                            "Avatar URL'si (herhangi bir resim URL'sini destekler)"
+                        ],
+                        appPreferencesTitle: "Uygulama Tercihleri",
+                        tableSetting: "Ayar",
+                        tableOptions: "Seçenekler",
+                        tableDescription: "Açıklama",
+                        sectionImportExport: "Veri İçe & Dışa Aktarma",
+                        importP1: "Taskly sağlam veri yönetimi özellikleri sunar:",
+                        exportTitle: "Veriyi Dışa Aktarma",
+                        exportSteps: [
+                            "Ayarlar → Veri'ye gidin",
+                            "'Veriyi Dışa Aktar'ı tıklayın",
+                            "Bir JSON dosyası indirilecektir",
+                            "Bu dosya tüm görevlerinizi, projelerinizi ve ayarlarınızı içerir"
+                        ],
+                        importTitle: "Veriyi İçe Aktarma",
+                        importSteps: [
+                            "Ayarlar → Veri'ye gidin",
+                            "'Veriyi İçe Aktar'ı tıklayın",
+                            "Daha önce dışa aktarılmış bir JSON dosyası seçin",
+                            "Mevcut verileri değiştirmek için onaylayın"
+                        ],
+                        noteBackup: "Önemli: Verilerinizi yedek olarak düzenli olarak dışa aktarın. Taskly verileri yerel olarak saklar, bu nedenle tarayıcı verilerini temizlemek görevlerinizi kaldıracaktır.",
+                        clearDataTitle: "Tüm Verileri Temizleme",
+                        clearP1: "Yeni başlamak veya sorunları gidermek için:",
+                        clearInstructions: "1. Ayarlar → Veri'ye gidin\n2. 'Tüm Veriyi Temizle'yi tıklayın\n3. Eylemi onaylayın\n4. Tüm görevler, projeler ve ayarlar kaldırılacaktır",
+                        footerText: "© 2026 Taskly. Tüm hakları saklıdır. ",
+                        footerSupport: "Yardıma mı ihtiyacınız var? Destek İletişimi",
+                        backText: "Uygulamaya Dön"
+                    }
+                };
+
+                const t = translations[language] || translations.en;
+
+                // Update all text content
+                document.getElementById('docs-logo-title').textContent = t.logoTitle;
+                document.getElementById('docs-logo-subtitle').textContent = t.logoSubtitle;
+                document.getElementById('getting-started-title').textContent = t.gettingStarted;
+                document.getElementById('nav-introduction').textContent = t.navIntroduction;
+                document.getElementById('nav-installation').textContent = t.navInstallation;
+                document.getElementById('nav-quick-start').textContent = t.navQuickStart;
+                document.getElementById('core-features-title').textContent = t.coreFeatures;
+                document.getElementById('nav-tasks').textContent = t.navTasks;
+                document.getElementById('nav-projects').textContent = t.navProjects;
+                document.getElementById('nav-calendar').textContent = t.navCalendar;
+                document.getElementById('nav-dashboard').textContent = t.navDashboard;
+                document.getElementById('advanced-title').textContent = t.advanced;
+                document.getElementById('nav-settings').textContent = t.navSettings;
+                document.getElementById('nav-import-export').textContent = t.navImportExport;
+                document.getElementById('nav-api').textContent = t.navApi;
+                document.getElementById('troubleshooting-title').textContent = t.troubleshooting;
+                document.getElementById('nav-faq').textContent = t.navFaq;
+                document.getElementById('nav-common-issues').textContent = t.navCommonIssues;
+                document.getElementById('nav-contact').textContent = t.navContact;
+                document.getElementById('docs-title').textContent = t.docsTitle;
+                document.getElementById('docs-subtitle').textContent = t.docsSubtitle;
+                document.getElementById('section-introduction').textContent = t.sectionIntroduction;
+                document.getElementById('intro-p1').textContent = t.introP1;
+                document.getElementById('feature-key').textContent = t.featureKey;
+                document.getElementById('feature-list').innerHTML = t.featureList.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('note-local').textContent = t.noteLocal;
+                document.getElementById('section-installation').textContent = t.sectionInstallation;
+                document.getElementById('install-p1').textContent = t.installP1;
+                document.getElementById('browser-requirements').textContent = t.browserRequirements;
+                document.getElementById('browser-p1').textContent = t.browserP1;
+                document.getElementById('browser-list').innerHTML = t.browserList.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('table-browser').textContent = t.tableBrowser;
+                document.getElementById('table-version').textContent = t.tableVersion;
+                document.getElementById('table-status').textContent = t.tableStatus;
+                document.getElementById('section-quick-start').textContent = t.sectionQuickStart;
+                document.getElementById('quick-p1').textContent = t.quickP1;
+                document.getElementById('step1-title').textContent = t.step1Title;
+                document.getElementById('step1-p1').textContent = t.step1P1;
+                document.getElementById('step2-title').textContent = t.step2Title;
+                document.getElementById('step2-list').innerHTML = t.step2List.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('step3-title').textContent = t.step3Title;
+                document.getElementById('step3-p1').textContent = t.step3P1;
+                document.getElementById('project-example').textContent = t.projectExample;
+                document.getElementById('tip-sample').textContent = t.tipSample;
+                document.getElementById('section-tasks').textContent = t.sectionTasks;
+                document.getElementById('tasks-p1').textContent = t.tasksP1;
+                document.getElementById('task-creation-title').textContent = t.taskCreationTitle;
+                document.getElementById('task-creation-p1').textContent = t.taskCreationP1;
+                document.getElementById('task-properties').innerHTML = t.taskProperties.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('task-actions-title').textContent = t.taskActionsTitle;
+                document.getElementById('action-complete').textContent = t.actionComplete;
+                document.getElementById('action-complete-p').textContent = t.actionCompleteP;
+                document.getElementById('action-edit').textContent = t.actionEdit;
+                document.getElementById('action-edit-p').textContent = t.actionEditP;
+                document.getElementById('action-delete').textContent = t.actionDelete;
+                document.getElementById('action-delete-p').textContent = t.actionDeleteP;
+                document.getElementById('section-projects').textContent = t.sectionProjects;
+                document.getElementById('projects-p1').textContent = t.projectsP1;
+                document.getElementById('creating-projects-title').textContent = t.creatingProjectsTitle;
+                document.getElementById('create-project-steps').innerHTML = t.createProjectSteps.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('project-management-title').textContent = t.projectManagementTitle;
+                document.getElementById('project-management-p').textContent = t.projectManagementP;
+                document.getElementById('project-features').innerHTML = t.projectFeatures.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('warning-delete').textContent = t.warningDelete;
+                document.getElementById('section-settings').textContent = t.sectionSettings;
+                document.getElementById('settings-p1').textContent = t.settingsP1;
+                document.getElementById('profile-settings-title').textContent = t.profileSettingsTitle;
+                document.getElementById('profile-options').innerHTML = t.profileOptions.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('app-preferences-title').textContent = t.appPreferencesTitle;
+                document.getElementById('table-setting').textContent = t.tableSetting;
+                document.getElementById('table-options').textContent = t.tableOptions;
+                document.getElementById('table-description').textContent = t.tableDescription;
+                document.getElementById('section-import-export').textContent = t.sectionImportExport;
+                document.getElementById('import-p1').textContent = t.importP1;
+                document.getElementById('export-title').textContent = t.exportTitle;
+                document.getElementById('export-steps').innerHTML = t.exportSteps.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('import-title').textContent = t.importTitle;
+                document.getElementById('import-steps').innerHTML = t.importSteps.map(item => `<li>${item}</li>`).join('');
+                document.getElementById('note-backup').textContent = t.noteBackup;
+                document.getElementById('clear-data-title').textContent = t.clearDataTitle;
+                document.getElementById('clear-p1').textContent = t.clearP1;
+                document.getElementById('clear-instructions').textContent = t.clearInstructions;
+                document.getElementById('footer-text').innerHTML = t.footerText + `<a href="support.html" id="footer-support">${t.footerSupport}</a>`;
+                document.getElementById('back-text').textContent = t.backText;
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskly - Professional Task Manager</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Login Check -->
+    <script>
+        // Check if user is logged in
+        document.addEventListener('DOMContentLoaded', function () {
+            const isLoggedIn = localStorage.getItem('taskly-logged-in') === 'true';
+            const currentUser = JSON.parse(localStorage.getItem('taskly-current-user'));
+
+            // Only redirect if NOT logged in AND there's no current user
+            if (!isLoggedIn || !currentUser || !currentUser.id) {
+                console.log('User not logged in, redirecting to login...');
+                window.location.href = 'login.html';
+            }
+            // If logged in, continue loading the app
+        });
+    </script>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <h1 class="app-title">Taskly</h1>
+                </div>
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="sidebar-content">
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <button class="quick-action-btn" id="quick-add-task">
+                        <i class="fas fa-plus"></i>
+                        <span>Quick Add</span>
+                    </button>
+                    <button class="quick-action-btn" id="quick-add-project">
+                        <i class="fas fa-folder-plus"></i>
+                        <span>New Project</span>
+                    </button>
+                </div>
+
+                <!-- Navigation Menu -->
+                <div class="nav-menu">
+                    <div class="nav-section">
+                        <h3>Overview</h3>
+                        <ul>
+                            <li><a href="#" class="nav-link active" data-view="dashboard">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Dashboard</span>
+                                </a></li>
+                            <li><a href="#" class="nav-link" data-view="today">
+                                    <i class="fas fa-calendar-day"></i>
+                                    <span>Today</span>
+                                    <span class="badge" id="today-count">0</span>
+                                </a></li>
+                            <li><a href="#" class="nav-link" data-view="calendar">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Calendar</span>
+                                </a></li>
+                        </ul>
+                    </div>
+
+                    <div class="nav-section">
+                        <h3>Projects</h3>
+                        <ul id="projects-list">
+                            <!-- Projects will be dynamically added here -->
+                        </ul>
+                    </div>
+
+                    <div class="nav-section">
+                        <h3>Tasks</h3>
+                        <ul>
+                            <li><a href="#" class="nav-link" data-view="all-tasks">
+                                    <i class="fas fa-tasks"></i>
+                                    <span>All Tasks</span>
+                                    <span class="badge" id="all-tasks-count">0</span>
+                                </a></li>
+                            <li><a href="#" class="nav-link" data-view="completed">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>Completed</span>
+                                    <span class="badge" id="completed-count">0</span>
+                                </a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-footer">
+                <button class="settings-btn" id="settings-btn">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <h2 id="page-title">Dashboard</h2>
+                    <p id="page-subtitle">Welcome back! Here's what's happening today.</p>
+                </div>
+                <div class="top-bar-right">
+                    <button class="btn btn-secondary btn-sm select-all-btn" title="Select All Tasks">
+                        <i class="fas fa-check-square"></i>
+                        Select All
+                    </button>
+                    <button class="btn btn-secondary btn-sm delete-selected-btn" title="Delete Selected">
+                        <i class="fas fa-trash"></i>
+                        Delete Selected
+                    </button>
+                    <button class="view-toggle" id="view-toggle" title="Switch View">
+                        <i class="fas fa-th-list"></i>
+                    </button>
+                    <button class="filter-btn" id="filter-btn" title="Filters">
+                        <i class="fas fa-filter"></i>
+                    </button>
+                    <button class="sort-btn" id="sort-btn" title="Sort">
+                        <i class="fas fa-sort"></i>
+                    </button>
+                    <div class="user-menu">
+                        <div class="user-info" id="user-info" style="display: none;">
+                            <img class="user-avatar" id="user-avatar" src="" alt="Avatar" style="display: none;">
+                            <span class="user-name" id="user-name"></span>
+                        </div>
+                        <button class="user-menu-btn login-btn" id="login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </button>
+                        <button class="user-menu-btn logout-btn" id="logout-btn" style="display: none;">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard View -->
+                <div id="dashboard-view" class="view active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-tasks">0</h3>
+                                <p>Total Tasks</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="completed-tasks">0</h3>
+                                <p>Completed</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="pending-tasks">0</h3>
+                                <p>Pending</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-folder"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3 id="total-projects">0</h3>
+                                <p>Projects</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-content">
+                        <div class="dashboard-section">
+                            <h3>Today's Tasks</h3>
+                            <div id="today-tasks-list" class="task-list">
+                                <!-- Today's tasks will be displayed here -->
+                            </div>
+                        </div>
+
+                        <div class="dashboard-section">
+                            <h3>Recent Projects</h3>
+                            <div id="recent-projects-list" class="project-list">
+                                <!-- Recent projects will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="charts-section">
+                        <div class="chart-container">
+                            <h3>Task Completion Trend</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="completion-chart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-container">
+                            <h3>Task Status Overview</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="status-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Today View -->
+                <div id="today-view" class="view">
+                    <div class="view-header">
+                        <h3>Today's Tasks</h3>
+                        <button class="btn btn-primary" id="add-today-task">
+                            <i class="fas fa-plus"></i>
+                            Add Task
+                        </button>
+                    </div>
+                    <div id="today-tasks" class="task-list">
+                        <!-- Today's tasks will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Calendar View -->
+                <div id="calendar-view" class="view">
+                    <div class="view-header">
+                        <h3>Calendar</h3>
+                        <button class="btn btn-primary" id="add-calendar-task">
+                            <i class="fas fa-plus"></i>
+                            Add Task
+                        </button>
+                    </div>
+                    <div id="calendar-container">
+                        <!-- Calendar will be rendered here -->
+                    </div>
+                </div>
+
+                <!-- Project View -->
+                <div id="project-view" class="view">
+                    <div class="view-header">
+                        <h3 id="project-title">Project Tasks</h3>
+                        <button class="btn btn-primary" id="add-project-task">
+                            <i class="fas fa-plus"></i>
+                            Add Task
+                        </button>
+                    </div>
+                    <div id="project-tasks" class="task-list">
+                        <!-- Project tasks will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- All Tasks View -->
+                <div id="all-tasks-view" class="view">
+                    <div class="view-header">
+                        <h3>All Tasks</h3>
+                        <button class="btn btn-primary" id="add-all-task">
+                            <i class="fas fa-plus"></i>
+                            Add Task
+                        </button>
+                    </div>
+                    <div id="all-tasks" class="task-list">
+                        <!-- All tasks will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Completed View -->
+                <div id="completed-view" class="view">
+                    <div class="view-header">
+                        <h3>Completed Tasks</h3>
+                    </div>
+                    <div id="completed-tasks" class="task-list">
+                        <!-- Completed tasks will be displayed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright Footer -->
+            <footer class="copyright-footer">
+                <p>© 2026 Taskly. All rights reserved to Khaled Alchalati</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="add-task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Task</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="add-task-form">
+                <div class="form-group">
+                    <label for="task-title">Task Title</label>
+                    <input type="text" id="task-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="task-description">Description</label>
+                    <textarea id="task-description" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="task-priority">Priority</label>
+                        <select id="task-priority">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-due-date">Due Date</label>
+                        <input type="date" id="task-due-date">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="task-project">Project</label>
+                    <select id="task-project">
+                        <option value="">No Project</option>
+                        <!-- Projects will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="task-labels">Labels (comma-separated)</label>
+                    <input type="text" id="task-labels" placeholder="work, urgent, personal">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Project Modal -->
+    <div id="add-project-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Project</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="add-project-form">
+                <div class="form-group">
+                    <label for="project-name">Project Name</label>
+                    <input type="text" id="project-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="project-description">Description</label>
+                    <textarea id="project-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="project-color">Color</label>
+                    <select id="project-color">
+                        <option value="#667eea">Blue</option>
+                        <option value="#f093fb">Pink</option>
+                        <option value="#4facfe">Light Blue</option>
+                        <option value="#43e97b">Green</option>
+                        <option value="#fa709a">Rose</option>
+                        <option value="#ffecd2">Orange</option>
+                        <option value="#a8edea">Mint</option>
+                        <option value="#d299c2">Purple</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary modal-cancel-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-content" style="max-width: 700px; max-height: 85vh;">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+
+            <div class="settings-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="profile">Profile</button>
+                    <button class="tab-btn" data-tab="preferences">Preferences</button>
+                    <button class="tab-btn" data-tab="data">Data</button>
+                    <button class="tab-btn" data-tab="about">About</button>
+                </div>
+
+                <div class="tab-content">
+                    <!-- Profile Tab -->
+                    <div id="profile-tab" class="tab-pane active">
+                        <div class="form-group">
+                            <label for="settings-user-name">Display Name</label>
+                            <input type="text" id="settings-user-name" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-user-email">Email</label>
+                            <input type="email" id="settings-user-email" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label for="settings-user-avatar">Avatar (URL)</label>
+                            <input type="text" id="settings-user-avatar" placeholder="Enter avatar image URL">
+                            <small style="color: var(--text-light); font-size: 12px;">Enter a direct image URL (e.g.,
+                                https://example.com/avatar.jpg)</small>
+                        </div>
+                        <div class="form-group" style="text-align: center; margin-top: 20px;">
+                            <img id="avatar-preview" src="" alt="Avatar Preview"
+                                style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--primary-color); display: none;">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveProfile()">
+                            <i class="fas fa-save"></i>
+                            Save Profile
+                        </button>
+                    </div>
+
+                    <!-- Preferences Tab -->
+                    <div id="preferences-tab" class="tab-pane">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="settings-theme">Theme</label>
+                                <select id="settings-theme">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                    <option value="auto">Auto (System)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="settings-language">Language</label>
+                                <select id="settings-language">
+                                    <option value="en">English</option>
+                                    <option value="tr">Türkçe (Turkish)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="settings-date-format">Date Format</label>
+                                <select id="settings-date-format">
+                                    <option value="mm/dd/yyyy">MM/DD/YYYY</option>
+                                    <option value="dd/mm/yyyy">DD/MM/YYYY</option>
+                                    <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="settings-time-format">Time Format</label>
+                                <select id="settings-time-format">
+                                    <option value="12">12 Hour</option>
+                                    <option value="24">24 Hour</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                <input type="checkbox" id="settings-notifications" style="width: auto;">
+                                <span>Enable notifications</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                                <input type="checkbox" id="settings-auto-save" style="width: auto;" checked>
+                                <span>Auto-save changes</span>
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="savePreferences()">
+                            <i class="fas fa-save"></i>
+                            Save Preferences
+                        </button>
+                    </div>
+
+                    <!-- Data Tab -->
+                    <div id="data-tab" class="tab-pane">
+                        <div class="stats-grid" style="margin-bottom: 20px;">
+                            <div class="stat-item">
+                                <h3 id="settings-total-tasks">0</h3>
+                                <p>Total Tasks</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3 id="settings-total-projects">0</h3>
+                                <p>Total Projects</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3 id="settings-completed-tasks">0</h3>
+                                <p>Completed Tasks</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3 id="settings-storage-used">0 KB</h3>
+                                <p>Storage Used</p>
+                            </div>
+                        </div>
+
+                        <div class="data-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" onclick="exportData()">
+                                <i class="fas fa-download"></i>
+                                Export Data
+                            </button>
+                            <button class="btn btn-secondary" onclick="importData()">
+                                <i class="fas fa-upload"></i>
+                                Import Data
+                            </button>
+                            <button class="btn btn-danger" onclick="clearAllData()">
+                                <i class="fas fa-trash"></i>
+                                Clear All Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- About Tab -->
+                    <div id="about-tab" class="tab-pane">
+                        <div class="form-group">
+                            <p><strong>Version:</strong> 1.0.0</p>
+                            <p><strong>Build:</strong> 2026.1</p>
+                            <p><strong>Developer:</strong> Taskly Team</p>
+                            <p><strong>License:</strong> MIT</p>
+                        </div>
+                        <div class="data-actions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" onclick="checkUpdates()">
+                                <i class="fas fa-sync"></i>
+                                Check for Updates
+                            </button>
+                            <button class="btn btn-secondary" onclick="window.open('documentation.html', '_blank')">
+                                <i class="fas fa-book"></i>
+                                Documentation
+                            </button>
+                            <button class="btn btn-secondary" onclick="window.open('support.html', '_blank')">
+                                <i class="fas fa-question-circle"></i>
+                                Help & Support
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+
+    <!-- Notification Container -->
+    <div id="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

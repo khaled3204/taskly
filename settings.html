@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskly Settings</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: var(--background-secondary);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .settings-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: var(--background-primary);
+            min-height: 100vh;
+        }
+        
+        .settings-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .settings-header .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .custom-logo {
+            height: 2rem;
+            width: auto;
+        }
+        
+        .checkmark-icon {
+            height: 1rem;
+            width: auto;
+            margin-left: 0.5rem;
+        }
+        
+        .custom-logo path,
+        .custom-logo rect {
+            transition: var(--transition);
+        }
+        
+        .settings-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .settings-content {
+            display: grid;
+            gap: 2rem;
+        }
+        
+        .settings-section {
+            background: var(--background-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .settings-section h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .settings-section h2 i {
+            color: var(--secondary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-family: inherit;
+            background: var(--background-primary);
+            color: var(--text-primary);
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 0.875rem;
+            font-weight: 500;
+            font-family: inherit;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        
+        .btn-primary {
+            background: var(--secondary-color);
+            color: white;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-color);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .btn-secondary {
+            background: var(--background-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--background-tertiary);
+            border-color: var(--text-light);
+            transform: translateY(-1px);
+        }
+        
+        .btn-danger {
+            background: var(--error-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #d32f2f;
+            transform: translateY(-1px);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .stat-item {
+            background: var(--background-tertiary);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-item p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .data-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .close-btn:hover {
+            background: var(--background-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            max-width: 300px;
+            word-wrap: break-word;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: #4caf50;
+        }
+        
+        .notification.error {
+            background: #f44336;
+        }
+        
+        .notification.info {
+            background: #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <button class="close-btn" onclick="window.close()">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <div class="settings-header">
+            <div class="logo">
+                <svg class="custom-logo" viewBox="0 0 60 30" width="40" height="30">
+                    <!-- Simple T shape -->
+                    <rect x="8" y="4" width="24" height="4" rx="2" fill="#2c5aa0"/>
+                    <rect x="18" y="4" width="4" height="20" rx="2" fill="#2c5aa0"/>
+                    
+                    <!-- Green checkmark -->
+                    <path d="M32 12 L34 14 L38 8" stroke="#32cd32" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h1>Taskly Settings</h1>
+                <svg class="checkmark-icon" viewBox="0 0 20 20" width="16" height="16">
+                    <path d="M6 10 L8 12 L14 6" stroke="#32cd32" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="settings-content">
+            <!-- User Profile Section -->
+            <div class="settings-section">
+                <h2><i class="fas fa-user"></i> User Profile</h2>
+                <div class="form-group">
+                    <label for="user-name">Display Name</label>
+                    <input type="text" id="user-name" value="John Doe" placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="user-email">Email</label>
+                    <input type="email" id="user-email" value="john.doe@example.com" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="user-avatar">Avatar</label>
+                    <input type="file" id="user-avatar" accept="image/*">
+                </div>
+                <button class="btn btn-primary" onclick="saveProfile()">
+                    <i class="fas fa-save"></i>
+                    Save Profile
+                </button>
+            </div>
+            
+            <!-- App Preferences Section -->
+            <div class="settings-section">
+                <h2><i class="fas fa-cog"></i> App Preferences</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="theme">Theme</label>
+                        <select id="theme">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="language">Language</label>
+                        <select id="language">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                            <option value="de">German</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="date-format">Date Format</label>
+                        <select id="date-format">
+                            <option value="mm/dd/yyyy">MM/DD/YYYY</option>
+                            <option value="dd/mm/yyyy">DD/MM/YYYY</option>
+                            <option value="yyyy-mm-dd">YYYY-MM-DD</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="time-format">Time Format</label>
+                        <select id="time-format">
+                            <option value="12">12 Hour</option>
+                            <option value="24">24 Hour</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="notifications" checked>
+                        Enable notifications
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="auto-save" checked>
+                        Auto-save changes
+                    </label>
+                </div>
+                <button class="btn btn-primary" onclick="savePreferences()">
+                    <i class="fas fa-save"></i>
+                    Save Preferences
+                </button>
+            </div>
+            
+            <!-- Data Management Section -->
+            <div class="settings-section">
+                <h2><i class="fas fa-database"></i> Data Management</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <h3 id="total-tasks-count">0</h3>
+                        <p>Total Tasks</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="total-projects-count">0</h3>
+                        <p>Total Projects</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="completed-tasks-count">0</h3>
+                        <p>Completed Tasks</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 id="storage-used">0 KB</h3>
+                        <p>Storage Used</p>
+                    </div>
+                </div>
+                
+                <div class="data-actions">
+                    <button class="btn btn-secondary" onclick="exportData()">
+                        <i class="fas fa-download"></i>
+                        Export Data
+                    </button>
+                    <button class="btn btn-secondary" onclick="importData()">
+                        <i class="fas fa-upload"></i>
+                        Import Data
+                    </button>
+                    <button class="btn btn-danger" onclick="clearAllData()">
+                        <i class="fas fa-trash"></i>
+                        Clear All Data
+                    </button>
+                </div>
+            </div>
+            
+            <!-- About Section -->
+            <div class="settings-section">
+                <h2><i class="fas fa-info-circle"></i> About Taskly</h2>
+                <div class="form-group">
+                    <p><strong>Version:</strong> 1.0.0</p>
+                    <p><strong>Build:</strong> 2024.1</p>
+                    <p><strong>Developer:</strong> Taskly Team</p>
+                    <p><strong>License:</strong> MIT</p>
+                </div>
+                <div class="data-actions">
+                    <button class="btn btn-secondary" onclick="checkUpdates()">
+                        <i class="fas fa-sync"></i>
+                        Check for Updates
+                    </button>
+                    <button class="btn btn-secondary" onclick="openHelp()">
+                        <i class="fas fa-question-circle"></i>
+                        Help & Support
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+    
+    <script>
+        // Load settings data
+        function loadSettings() {
+            // Load user profile
+            const userName = localStorage.getItem('taskly-user-name') || 'John Doe';
+            const userEmail = localStorage.getItem('taskly-user-email') || 'john.doe@example.com';
+            
+            document.getElementById('user-name').value = userName;
+            document.getElementById('user-email').value = userEmail;
+            
+            // Load preferences
+            const theme = localStorage.getItem('taskly-theme') || 'light';
+            const language = localStorage.getItem('taskly-language') || 'en';
+            const dateFormat = localStorage.getItem('taskly-date-format') || 'mm/dd/yyyy';
+            const timeFormat = localStorage.getItem('taskly-time-format') || '12';
+            const notifications = localStorage.getItem('taskly-notifications') !== 'false';
+            const autoSave = localStorage.getItem('taskly-auto-save') !== 'false';
+            
+            document.getElementById('theme').value = theme;
+            document.getElementById('language').value = language;
+            document.getElementById('date-format').value = dateFormat;
+            document.getElementById('time-format').value = timeFormat;
+            document.getElementById('notifications').checked = notifications;
+            document.getElementById('auto-save').checked = autoSave;
+            
+            // Load data stats
+            updateDataStats();
+        }
+        
+        function updateDataStats() {
+            const tasks = JSON.parse(localStorage.getItem('taskmaster-tasks') || '[]');
+            const projects = JSON.parse(localStorage.getItem('taskmaster-projects') || '[]');
+            
+            const totalTasks = tasks.length;
+            const totalProjects = projects.length;
+            const completedTasks = tasks.filter(t => t.status === 'completed').length;
+            
+            // Calculate storage used
+            const storageUsed = JSON.stringify(localStorage).length;
+            const storageKB = Math.round(storageUsed / 1024);
+            
+            document.getElementById('total-tasks-count').textContent = totalTasks;
+            document.getElementById('total-projects-count').textContent = totalProjects;
+            document.getElementById('completed-tasks-count').textContent = completedTasks;
+            document.getElementById('storage-used').textContent = storageKB + ' KB';
+        }
+        
+        function saveProfile() {
+            const userName = document.getElementById('user-name').value.trim();
+            const userEmail = document.getElementById('user-email').value.trim();
+            const avatarFile = document.getElementById('user-avatar').files[0];
+            
+            if (!userName) {
+                showNotification('Please enter a valid name', 'error');
+                return;
+            }
+            
+            localStorage.setItem('taskly-user-name', userName);
+            localStorage.setItem('taskly-user-email', userEmail);
+            
+            if (avatarFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    localStorage.setItem('taskly-user-avatar', e.target.result);
+                    showNotification('Profile saved successfully!', 'success');
+                };
+                reader.readAsDataURL(avatarFile);
+            } else {
+                showNotification('Profile saved successfully!', 'success');
+            }
+        }
+        
+        function savePreferences() {
+            const theme = document.getElementById('theme').value;
+            const language = document.getElementById('language').value;
+            const dateFormat = document.getElementById('date-format').value;
+            const timeFormat = document.getElementById('time-format').value;
+            const notifications = document.getElementById('notifications').checked;
+            const autoSave = document.getElementById('auto-save').checked;
+            
+            localStorage.setItem('taskly-theme', theme);
+            localStorage.setItem('taskly-language', language);
+            localStorage.setItem('taskly-date-format', dateFormat);
+            localStorage.setItem('taskly-time-format', timeFormat);
+            localStorage.setItem('taskly-notifications', notifications);
+            localStorage.setItem('taskly-auto-save', autoSave);
+            
+            showNotification('Preferences saved successfully!', 'success');
+        }
+        
+        function exportData() {
+            const tasks = JSON.parse(localStorage.getItem('taskmaster-tasks') || '[]');
+            const projects = JSON.parse(localStorage.getItem('taskmaster-projects') || '[]');
+            
+            const exportData = {
+                tasks: tasks,
+                projects: projects,
+                exportDate: new Date().toISOString(),
+                version: '1.0.0'
+            };
+            
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `taskly-export-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Data exported successfully!', 'success');
+        }
+        
+        function importData() {
+            document.getElementById('import-file').click();
+        }
+        
+        document.getElementById('import-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.tasks && data.projects) {
+                        localStorage.setItem('taskmaster-tasks', JSON.stringify(data.tasks));
+                        localStorage.setItem('taskmaster-projects', JSON.stringify(data.projects));
+                        
+                        updateDataStats();
+                        showNotification('Data imported successfully!', 'success');
+                    } else {
+                        showNotification('Invalid file format', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Error reading file', 'error');
+                }
+            };
+            reader.readAsText(file);
+        });
+        
+        function clearAllData() {
+            if (confirm('Are you sure you want to clear all data? This action cannot be undone.')) {
+                localStorage.clear();
+                updateDataStats();
+                showNotification('All data cleared successfully!', 'success');
+            }
+        }
+        
+        function checkUpdates() {
+            showNotification('You are using the latest version!', 'info');
+        }
+        
+        function openHelp() {
+            showNotification('Help documentation coming soon!', 'info');
+        }
+        
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+        // Initialize settings when page loads
+        document.addEventListener('DOMContentLoaded', loadSettings);
+    </script>
+</body>
+</html>

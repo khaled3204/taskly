@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taskly - Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #ffffff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated particle background */
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 40% 60%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+                #0a0a0a;
+        }
+
+            /* Time display */
+        .time-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 110px; /* Adjusted for better fit */
+            height: 80px;
+            z-index: 2;
+        }
+
+        .time-display {
+            background: rgba(37, 99, 235, 0.2);
+            border-radius: 16px;
+            width: 110px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(59, 130, 246, 0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+        }
+
+        .time-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px; /* Increased gap */
+        }
+
+        /* Make all time elements the same size */
+        .time-hour,
+        .time-colon,
+        .time-minute {
+            font-size: 28px; /* Larger font size */
+            font-weight: bold;
+            color: #3b82f6;
+            font-family: 'Courier New', monospace;
+            line-height: 1; /* Ensure same line height */
+            height: 32px; /* Fixed height for alignment */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .time-hour {
+            min-width: 30px; /* Fixed width for alignment */
+        }
+
+        .time-minute {
+            min-width: 30px; /* Fixed width for alignment */
+        }
+
+        .time-colon {
+            margin: 0 2px;
+            animation: blink 2s infinite;
+            min-width: 10px; /* Fixed width for colon */
+        }
+
+        /* Blinking animation for the colon */
+        @keyframes blink {
+            0%, 50% {
+                opacity: 1;
+            }
+            51%, 100% {
+                opacity: 0.3;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .time-container {
+                width: 90px;
+                height: 60px;
+                top: 10px;
+                right: 10px;
+            }
+
+            .time-display {
+                width: 90px;
+                height: 60px;
+                border-radius: 12px;
+            }
+
+            .time-hour,
+            .time-colon,
+            .time-minute {
+                font-size: 22px; /* Slightly smaller on mobile */
+                height: 25px;
+            }
+        }
+
+        /* Language selector */
+        .language-selector {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .language-selector select {
+            background: white; /* White background */
+            color: #1a1a1a; /* Black text */
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            padding: 6px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-selector select:hover {
+            background: #f8f9fa; /* Slightly lighter white on hover */
+            border-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .language-selector select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+            background: white; /* Keep white on focus */
+        }
+        /* Rest of your existing styles... */
+        /* Keep all the existing styles from line 50 to the end */
+        /* ... [ALL EXISTING STYLES REMAIN THE SAME] ... */
+
+        .auth-container {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(17, 24, 39, 0.85);
+            border-radius: 16px;
+            box-shadow:
+                0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+            padding: 40px 32px 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+        }
+
+        .app-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .app-subtitle {
+            font-size: 14px;
+            color: #9ca3af;
+            font-weight: 400;
+            margin: 0 auto;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px 12px 0 0;
+            overflow: hidden;
+            margin: 0 32px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 16px;
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .auth-tab.active {
+            color: #ffffff;
+            background: rgba(37, 99, 235, 0.2);
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #3b82f6;
+        }
+
+        .auth-content {
+            padding: 32px;
+        }
+
+        .auth-form {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #d1d5db;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.05);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: #6b7280;
+        }
+
+        .password-input {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .toggle-password:hover {
+            color: #d1d5db;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 15px 30px rgba(37, 99, 235, 0.4),
+                0 0 0 1px rgba(59, 130, 246, 0.3);
+        }
+
+        .auth-btn:hover::before {
+            left: 100%;
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .forgot-password a {
+            color: #93c5fd;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .forgot-password a:hover {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 13px;
+            color: #6b7280;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .auth-footer a {
+            color: #93c5fd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            color: #3b82f6;
+            text-decoration: underline;
+        }
+
+        .notification {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        .notification.show {
+            display: block;
+        }
+
+        .notification.success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .notification.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .notification.info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                max-width: 100%;
+                border-radius: 12px;
+            }
+
+            .auth-header {
+                padding: 30px 24px 20px;
+            }
+
+            .auth-content {
+                padding: 24px;
+            }
+
+            .auth-tabs {
+                margin: 0 24px;
+            }
+
+            .app-title {
+                font-size: 28px;
+            }
+
+            .time-container {
+                width: 60px;
+                height: 60px;
+                top: 10px;
+                right: 10px;
+            }
+
+            .time-display {
+                width: 60px;
+                height: 60px;
+            }
+
+            .time-hour {
+                font-size: 16px;
+            }
+
+            .time-minute {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Time display -->
+    <div class="time-container">
+        <div class="time-display">
+            <div class="time-content">
+                <div class="time-hour" id="current-hour">00</div>
+                <div class="time-colon">:</div>
+                <div class="time-minute" id="current-minute">00</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particle background container -->
+    <div id="particles-js"></div>
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1 class="app-title">Taskly</h1>
+            <p class="app-subtitle" id="app-subtitle">Professional Task Management System</p>
+            <div class="language-selector">
+                <select id="login-language-select">
+                    <option value="en">🌐 English</option>
+                    <option value="tr">🇹🇷 Türkçe</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="auth-tabs">
+            <button class="auth-tab active" id="login-tab">
+                <i class="fas fa-sign-in-alt"></i>
+                <span id="login-tab-text">Sign In</span>
+            </button>
+            <button class="auth-tab" id="signup-tab">
+                <i class="fas fa-user-plus"></i>
+                <span id="signup-tab-text">Sign Up</span>
+            </button>
+        </div>
+
+        <div class="auth-content">
+            <!-- Notification Container -->
+            <div id="notification-container"></div>
+
+            <!-- Login Form -->
+            <form class="auth-form active" id="login-form">
+                <div class="form-group">
+                    <label id="login-email-label">Email Address</label>
+                    <input type="email" id="login-email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label id="login-password-label">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="login-password" placeholder="Enter your password" required>
+                        <button type="button" class="toggle-password" id="login-toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-btn" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span id="login-btn-text">Sign In</span>
+                </button>
+
+                <div class="forgot-password">
+                    <a href="#" id="forgot-password-link">Forgot Password?</a>
+                </div>
+            </form>
+
+            <!-- Signup Form -->
+            <form class="auth-form" id="signup-form">
+                <div class="form-group">
+                    <label id="signup-name-label">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="form-group">
+                    <label id="signup-email-label">Email Address</label>
+                    <input type="email" id="signup-email" placeholder="Enter your email" required>
+                </div>
+
+                <div class="form-group">
+                    <label id="signup-password-label">Password</label>
+                    <div class="password-input">
+                        <input type="password" id="signup-password" placeholder="Create a password" required>
+                        <button type="button" class="toggle-password" id="signup-toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="signup-confirm-label">Confirm Password</label>
+                    <div class="password-input">
+                        <input type="password" id="signup-confirm" placeholder="Confirm your password" required>
+                        <button type="button" class="toggle-password" id="signup-toggle-confirm">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="auth-btn" id="signup-btn">
+                    <i class="fas fa-user-plus"></i>
+                    <span id="signup-btn-text">Create Account</span>
+                </button>
+            </form>
+
+            <!-- Forgot Password Form -->
+            <form class="auth-form" id="forgot-form">
+                <div class="form-group">
+                    <label id="forgot-email-label">Email Address</label>
+                    <input type="email" id="forgot-email" placeholder="Enter your email" required>
+                </div>
+
+                <button type="submit" class="auth-btn" id="forgot-btn">
+                    <i class="fas fa-envelope"></i>
+                    <span id="forgot-btn-text">Send Reset Link</span>
+                </button>
+
+                <div class="forgot-password">
+                    <a href="#" id="back-to-login-link">Back to Sign In</a>
+                </div>
+            </form>
+
+            <div class="auth-footer">
+                <p id="footer-text">Need help? <a href="support.html" id="help-link">Contact support</a> or read our <a
+                        href="documentation.html" id="docs-link">documentation</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particle.js library -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Check if already logged in - MORE SPECIFIC CHECK
+        document.addEventListener('DOMContentLoaded', function () {
+            const isLoggedIn = localStorage.getItem('taskly-logged-in') === 'true';
+            const currentUser = JSON.parse(localStorage.getItem('taskly-current-user'));
+
+            // Only redirect if BOTH conditions are true
+            if (isLoggedIn && currentUser && currentUser.id) {
+                console.log('User already logged in, redirecting to main app...');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 100);
+                return;
+            }
+
+            // Initialize time display with blinking colon
+            function updateLoginTime() {
+                const now = new Date();
+                document.getElementById('current-hour').textContent = now.getHours().toString().padStart(2, '0');
+                document.getElementById('current-minute').textContent = now.getMinutes().toString().padStart(2, '0');
+
+                // Add seconds if you want (optional)
+                // document.getElementById('current-second').textContent = now.getSeconds().toString().padStart(2, '0');
+            }
+
+            // Update immediately
+            updateLoginTime();
+
+            // Update every second (like a real digital clock)
+            setInterval(updateLoginTime, 1000);
+
+            if (typeof particlesJS !== 'undefined') {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: {
+                            value: 80,
+                            density: {
+                                enable: true,
+                                value_area: 800
+                            }
+                        },
+                        color: {
+                            value: "#3b82f6"
+                        },
+                        shape: {
+                            type: "circle",
+                            stroke: {
+                                width: 0,
+                                color: "#000000"
+                            }
+                        },
+                        opacity: {
+                            value: 0.3,
+                            random: true,
+                            anim: {
+                                enable: true,
+                                speed: 1,
+                                opacity_min: 0.1,
+                                sync: false
+                            }
+                        },
+                        size: {
+                            value: 3,
+                            random: true,
+                            anim: {
+                                enable: true,
+                                speed: 2,
+                                size_min: 0.1,
+                                sync: false
+                            }
+                        },
+                        line_linked: {
+                            enable: true,
+                            distance: 150,
+                            color: "#3b82f6",
+                            opacity: 0.1,
+                            width: 1
+                        },
+                        move: {
+                            enable: true,
+                            speed: 1,
+                            direction: "none",
+                            random: true,
+                            straight: false,
+                            out_mode: "out",
+                            bounce: false,
+                            attract: {
+                                enable: false,
+                                rotateX: 600,
+                                rotateY: 1200
+                            }
+                        }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: {
+                                enable: true,
+                                mode: "grab"
+                            },
+                            onclick: {
+                                enable: true,
+                                mode: "push"
+                            },
+                            resize: true
+                        },
+                        modes: {
+                            grab: {
+                                distance: 140,
+                                line_linked: {
+                                    opacity: 0.3
+                                }
+                            },
+                            push: {
+                                particles_nb: 4
+                            }
+                        }
+                    },
+                    retina_detect: true
+                });
+            }
+
+            // Initialize user database
+            const userDB = new UserDatabase();
+
+            // Set initial language select value
+            const savedLanguage = localStorage.getItem('taskly-language') || 'en';
+            document.getElementById('login-language-select').value = savedLanguage;
+
+            // Apply language
+            applyLoginLanguage();
+
+            // Language selector change event
+            document.getElementById('login-language-select').addEventListener('change', function (e) {
+                const selectedLanguage = e.target.value;
+                localStorage.setItem('taskly-language', selectedLanguage);
+                applyLoginLanguage();
+            });
+
+            // Tab switching
+            document.getElementById('login-tab').addEventListener('click', () => switchTab('login'));
+            document.getElementById('signup-tab').addEventListener('click', () => switchTab('signup'));
+
+            // Forgot password link
+            document.getElementById('forgot-password-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('forgot');
+            });
+
+            // Back to login link
+            document.getElementById('back-to-login-link').addEventListener('click', (e) => {
+                e.preventDefault();
+                switchTab('login');
+            });
+
+            // Toggle password visibility
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const input = this.parentElement.querySelector('input');
+                    const icon = this.querySelector('i');
+
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+
+            // Login form submission
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const email = document.getElementById('login-email').value.trim();
+                const password = document.getElementById('login-password').value.trim();
+                const btn = document.getElementById('login-btn');
+
+                if (!email || !password) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+
+                // Show loading state
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+                btn.disabled = true;
+
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                const result = userDB.authenticate(email, password);
+
+                if (result.success) {
+                    // Store current user info
+                    localStorage.setItem('taskly-current-user', JSON.stringify(result.user));
+                    localStorage.setItem('taskly-logged-in', 'true');
+                    localStorage.setItem('taskly-user-name', result.user.name);
+                    localStorage.setItem('taskly-user-avatar', result.user.avatar);
+                    localStorage.setItem('taskly-user-email', result.user.email);
+
+                    // Load user settings
+                    if (result.user.settings) {
+                        localStorage.setItem('taskly-theme', result.user.settings.theme);
+                        localStorage.setItem('taskly-language', result.user.settings.language);
+                        localStorage.setItem('taskly-notifications', result.user.settings.notifications);
+                    }
+
+                    showNotification('Login successful! Redirecting...', 'success');
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    showNotification(result.message, 'error');
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }
+            });
+
+            // Signup form submission
+            document.getElementById('signup-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const name = document.getElementById('signup-name').value.trim();
+                const email = document.getElementById('signup-email').value.trim();
+                const password = document.getElementById('signup-password').value.trim();
+                const confirmPassword = document.getElementById('signup-confirm').value.trim();
+                const btn = document.getElementById('signup-btn');
+
+                // Validation
+                if (!name || !email || !password || !confirmPassword) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    showNotification('Password must be at least 6 characters', 'error');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    showNotification('Passwords do not match', 'error');
+                    return;
+                }
+
+                if (!validateEmail(email)) {
+                    showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+
+                // Show loading state
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
+                btn.disabled = true;
+
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                const result = userDB.createUser(name, email, password);
+
+                if (result.success) {
+                    // Auto login after signup
+                    localStorage.setItem('taskly-current-user', JSON.stringify(result.user));
+                    localStorage.setItem('taskly-logged-in', 'true');
+                    localStorage.setItem('taskly-user-name', result.user.name);
+                    localStorage.setItem('taskly-user-avatar', result.user.avatar);
+                    localStorage.setItem('taskly-user-email', result.user.email);
+
+                    showNotification('Account created successfully! Logging in...', 'success');
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    showNotification(result.message, 'error');
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }
+            });
+
+            // Forgot password form submission
+            document.getElementById('forgot-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const email = document.getElementById('forgot-email').value.trim();
+                const btn = document.getElementById('forgot-btn');
+
+                if (!email) {
+                    showNotification('Please enter your email address', 'error');
+                    return;
+                }
+
+                if (!validateEmail(email)) {
+                    showNotification('Please enter a valid email address', 'error');
+                    return;
+                }
+
+                // Show loading state
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                btn.disabled = true;
+
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 800));
+
+                const user = userDB.findUserByEmail(email);
+                if (user) {
+                    showNotification('Password reset link has been sent to your email', 'success');
+                    setTimeout(() => {
+                        switchTab('login');
+                    }, 1500);
+                } else {
+                    showNotification('No account found with this email', 'error');
+                    btn.innerHTML = originalHTML;
+                    btn.disabled = false;
+                }
+            });
+
+            // Auto-focus email field
+            document.getElementById('login-email').focus();
+        });
+
+        function switchTab(tab) {
+            // Update active tab
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+
+            if (tab === 'login') {
+                document.getElementById('login-tab').classList.add('active');
+                document.getElementById('login-form').classList.add('active');
+                document.getElementById('login-email').focus();
+            } else if (tab === 'signup') {
+                document.getElementById('signup-tab').classList.add('active');
+                document.getElementById('signup-form').classList.add('active');
+                document.getElementById('signup-name').focus();
+            } else if (tab === 'forgot') {
+                document.getElementById('forgot-form').classList.add('active');
+                document.getElementById('forgot-email').focus();
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+
+            container.innerHTML = '';
+            container.appendChild(notification);
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function applyLoginLanguage() {
+            const language = localStorage.getItem('taskly-language') || 'en';
+            const translations = {
+                en: {
+                    appSubtitle: "Professional Task Management System",
+                    loginTab: "Sign In",
+                    signupTab: "Sign Up",
+                    loginEmailLabel: "Email Address",
+                    loginEmailPlaceholder: "Enter your email",
+                    loginPasswordLabel: "Password",
+                    loginPasswordPlaceholder: "Enter your password",
+                    loginButton: "Sign In",
+                    forgotPassword: "Forgot Password?",
+                    signupNameLabel: "Full Name",
+                    signupNamePlaceholder: "Enter your full name",
+                    signupEmailLabel: "Email Address",
+                    signupEmailPlaceholder: "Enter your email",
+                    signupPasswordLabel: "Password",
+                    signupPasswordPlaceholder: "Create a password",
+                    signupConfirmLabel: "Confirm Password",
+                    signupConfirmPlaceholder: "Confirm your password",
+                    signupButton: "Create Account",
+                    forgotEmailLabel: "Email Address",
+                    forgotEmailPlaceholder: "Enter your email",
+                    forgotButton: "Send Reset Link",
+                    backToLogin: "Back to Sign In",
+                    footerText: "Need help?",
+                    help: "Contact support",
+                    docs: "documentation"
+                },
+                tr: {
+                    appSubtitle: "Profesyonel Görev Yönetim Sistemi",
+                    loginTab: "Giriş Yap",
+                    signupTab: "Kayıt Ol",
+                    loginEmailLabel: "E-posta Adresi",
+                    loginEmailPlaceholder: "E-posta adresinizi girin",
+                    loginPasswordLabel: "Şifre",
+                    loginPasswordPlaceholder: "Şifrenizi girin",
+                    loginButton: "Giriş Yap",
+                    forgotPassword: "Şifremi Unuttum?",
+                    signupNameLabel: "Tam Ad",
+                    signupNamePlaceholder: "Tam adınızı girin",
+                    signupEmailLabel: "E-posta Adresi",
+                    signupEmailPlaceholder: "E-posta adresinizi girin",
+                    signupPasswordLabel: "Şifre",
+                    signupPasswordPlaceholder: "Şifre oluşturun",
+                    signupConfirmLabel: "Şifreyi Onayla",
+                    signupConfirmPlaceholder: "Şifrenizi onaylayın",
+                    signupButton: "Hesap Oluştur",
+                    forgotEmailLabel: "E-posta Adresi",
+                    forgotEmailPlaceholder: "E-posta adresinizi girin",
+                    forgotButton: "Sıfırlama Bağlantısı Gönder",
+                    backToLogin: "Girişe Geri Dön",
+                    footerText: "Yardıma mı ihtiyacınız var?",
+                    help: "Destek ile iletişim",
+                    docs: "dokümantasyon"
+                }
+            };
+
+            const t = translations[language] || translations.en;
+
+            // Update elements
+            document.getElementById('app-subtitle').textContent = t.appSubtitle;
+            document.getElementById('login-tab-text').textContent = t.loginTab;
+            document.getElementById('signup-tab-text').textContent = t.signupTab;
+
+            // Login form
+            document.getElementById('login-email-label').textContent = t.loginEmailLabel;
+            document.getElementById('login-email').placeholder = t.loginEmailPlaceholder;
+            document.getElementById('login-password-label').textContent = t.loginPasswordLabel;
+            document.getElementById('login-password').placeholder = t.loginPasswordPlaceholder;
+            document.getElementById('login-btn-text').textContent = t.loginButton;
+            document.getElementById('forgot-password-link').textContent = t.forgotPassword;
+
+            // Signup form
+            document.getElementById('signup-name-label').textContent = t.signupNameLabel;
+            document.getElementById('signup-name').placeholder = t.signupNamePlaceholder;
+            document.getElementById('signup-email-label').textContent = t.signupEmailLabel;
+            document.getElementById('signup-email').placeholder = t.signupEmailPlaceholder;
+            document.getElementById('signup-password-label').textContent = t.signupPasswordLabel;
+            document.getElementById('signup-password').placeholder = t.signupPasswordPlaceholder;
+            document.getElementById('signup-confirm-label').textContent = t.signupConfirmLabel;
+            document.getElementById('signup-confirm').placeholder = t.signupConfirmPlaceholder;
+            document.getElementById('signup-btn-text').textContent = t.signupButton;
+
+            // Forgot password form
+            document.getElementById('forgot-email-label').textContent = t.forgotEmailLabel;
+            document.getElementById('forgot-email').placeholder = t.forgotEmailPlaceholder;
+            document.getElementById('forgot-btn-text').textContent = t.forgotButton;
+            document.getElementById('back-to-login-link').textContent = t.backToLogin;
+
+            // Footer
+            document.getElementById('footer-text').innerHTML = `${t.footerText} <a href="support.html" id="help-link">${t.help}</a> or read our <a href="documentation.html" id="docs-link">${t.docs}</a>`;
+        }
+
+        // User Database Simulation
+        class UserDatabase {
+            constructor() {
+                this.users = this.loadUsers();
+            }
+
+            loadUsers() {
+                const users = localStorage.getItem('taskly-users');
+                return users ? JSON.parse(users) : [];
+            }
+
+            saveUsers() {
+                localStorage.setItem('taskly-users', JSON.stringify(this.users));
+            }
+
+            findUserByEmail(email) {
+                return this.users.find(user => user.email.toLowerCase() === email.toLowerCase());
+            }
+
+            createUser(name, email, password) {
+                const existingUser = this.findUserByEmail(email);
+                if (existingUser) {
+                    return { success: false, message: 'User already exists' };
+                }
+
+                const user = {
+                    id: Date.now(),
+                    name: name.trim(),
+                    email: email.toLowerCase().trim(),
+                    password: btoa(password), // Simple encoding (not secure for production)
+                    createdAt: new Date().toISOString(),
+                    lastLogin: null,
+                    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=667eea&color=fff&bold=true`,
+                    settings: {
+                        theme: 'light',
+                        language: 'en',
+                        notifications: true
+                    }
+                };
+
+                this.users.push(user);
+                this.saveUsers();
+
+                // Create user-specific data storage
+                this.createUserStorage(user.id);
+
+                return { success: true, user };
+            }
+
+            createUserStorage(userId) {
+                const userKey = `taskly-user-${userId}`;
+                if (!localStorage.getItem(userKey)) {
+                    const userData = {
+                        tasks: [],
+                        projects: [],
+                        nextTaskId: 1,
+                        nextProjectId: 1
+                    };
+                    localStorage.setItem(userKey, JSON.stringify(userData));
+                }
+            }
+
+            authenticate(email, password) {
+                const user = this.findUserByEmail(email);
+                if (!user) {
+                    return { success: false, message: 'User not found' };
+                }
+
+                if (btoa(password) !== user.password) {
+                    return { success: false, message: 'Invalid password' };
+                }
+
+                user.lastLogin = new Date().toISOString();
+                this.saveUsers();
+
+                return { success: true, user };
+            }
+
+            getAllUsers() {
+                return this.users;
+            }
+        }
+    </script>
+</body>
+
+</html>
