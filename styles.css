@@ -1651,3 +1651,31 @@ body {
         max-width: unset;
     }
 }
+/* ================================= */
+/*    MOBILE SIDEBAR SCROLL FIX     */
+/* ================================= */
+
+@media (max-width: 768px) {
+
+    .sidebar {
+        height: 100dvh;
+        /* modern real mobile height */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 20px;
+    }
+
+    .sidebar-content {
+        overflow-y: visible;
+    }
+
+    .sidebar-footer {
+        margin-top: auto;
+    }
+
+    /* Make sure content inside can scroll */
+    .sidebar.show {
+        overflow-y: auto;
+    }
+
+}
