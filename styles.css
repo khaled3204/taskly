@@ -1500,103 +1500,6 @@ body {
     }
 }
 
-/* Main Mobile Fix */
-@media (max-width: 768px) {
-
-    /* Sidebar becomes overlay drawer */
-    .sidebar {
-        position: fixed;
-        width: 260px;
-        height: 100vh;
-        transform: translateX(-100%);
-        box-shadow: var(--shadow-heavy);
-    }
-
-    .sidebar.show {
-        transform: translateX(0);
-    }
-
-    .main-content {
-        margin-left: 0 !important;
-        width: 100%;
-    }
-
-    /* Improve top bar */
-    .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: var(--spacing-md);
-    }
-
-    .top-bar-left h2 {
-        font-size: 1.25rem;
-    }
-
-    .top-bar-left p {
-        font-size: 0.8rem;
-    }
-
-    .top-bar-right {
-        width: 100%;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
-
-    /* Buttons responsive */
-    .btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.8rem;
-    }
-
-    /* Content spacing */
-    .content-area {
-        padding: var(--spacing-md);
-    }
-
-    /* Task item wrap fix */
-    .task-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-sm);
-    }
-
-    .task-actions {
-        width: 100%;
-        justify-content: flex-end;
-    }
-
-    /* Stats full width */
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-
-    /* Projects full width */
-    .project-list {
-        grid-template-columns: 1fr;
-    }
-
-    /* Forms stacked */
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-
-    /* Modal improvements */
-    .modal-content {
-        width: 95%;
-        padding: var(--spacing-lg);
-    }
-
-    /* Improve tab buttons */
-    .tab-buttons {
-        flex-wrap: wrap;
-    }
-
-    .tab-btn {
-        flex: 1 1 auto;
-        text-align: center;
-    }
-}
-
 /* Small Phones */
 @media (max-width: 480px) {
 
@@ -1635,31 +1538,113 @@ body {
         max-width: unset;
     }
 }
-/* ================================= */
-/*    MOBILE SIDEBAR SCROLL FIX     */
-/* ================================= */
 
+/* ========================================= */
+/*  FULL MOBILE SIDEBAR FIX FOR PHONES       */
+/* ========================================= */
 @media (max-width: 768px) {
 
     .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
         height: 100dvh;
-        /* modern real mobile height */
+        /* real viewport height for mobile */
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        z-index: 3000;
+        box-shadow: var(--shadow-heavy);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         padding-bottom: 20px;
     }
 
-    .sidebar-content {
-        overflow-y: visible;
-    }
-
-    .sidebar-footer {
-        margin-top: auto;
-    }
-
-    /* Make sure content inside can scroll */
     .sidebar.show {
+        transform: translateX(0);
         overflow-y: auto;
     }
 
+    .sidebar-header {
+        flex-shrink: 0;
+    }
+
+    .sidebar-content {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .sidebar-footer {
+        flex-shrink: 0;
+        margin-top: auto;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        width: 100%;
+    }
+
+    /* Top Bar adjustments */
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--spacing-md);
+    }
+
+    .top-bar-left h2 {
+        font-size: 1.25rem;
+    }
+
+    .top-bar-left p {
+        font-size: 0.8rem;
+    }
+
+    .top-bar-right {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+
+    /* Buttons responsive */
+    .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    /* Task items stacked */
+    .task-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+    }
+
+    .task-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    /* Grids stacked */
+    .stats-grid,
+    .dashboard-content,
+    .project-list,
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Modals & Tabs */
+    .modal-content {
+        width: 95%;
+        padding: var(--spacing-lg);
+    }
+
+    .tab-buttons {
+        flex-wrap: wrap;
+    }
+
+    .tab-btn {
+        flex: 1 1 auto;
+        text-align: center;
+    }
 }
